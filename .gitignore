@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/VolunteerCenterProject/.vs/VolunteerCenterProject/v17
+/VolunteerCenterProject/VolunteerCenterProject/obj
+/VolunteerCenterProject/.vs
+/VolunteerCenterProject/VolunteerCenterProject/bin/Debug/net6.0
