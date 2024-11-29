@@ -4,14 +4,19 @@ namespace VolunteerCenterProject.Models
 {
 	public class StatusHistory
 	{
+		public StatusHistory()
+		{
+			this.EventId = Guid.NewGuid().ToString();
+		}		
+		
+		public string EventId { get; set; }
+
 		public int StatusHistoryId { get; set; }
 
-		// Foreign Key for Event
-		public int EventId { get; set; }
-		public Events Event { get; set; }
+		public virtual Events Event { get; set; }
 
-		public int ChangedBy { get; set; }
-		public Users User { get; set; }
+		public string ChangedBy { get; set; }
+		public virtual Users User { get; set; }
 
 		public string NewStatus { get; set; } // E.g., Waiting, Assigned, InProgress, Completed, Canceled
 		public DateTime ChangeDate { get; set; }

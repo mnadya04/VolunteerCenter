@@ -1,19 +1,20 @@
-﻿namespace VolunteerCenterProject.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace VolunteerCenterProject.Models
 {
-	public class Users
+	public class Users : IdentityUser<string>
 	{
-		public int UserId { get; set; }
-		public string Username { get; set; }
-		public string PasswordHash { get; set; }
+		public Users()
+		{
+			this.Id = Guid.NewGuid().ToString();
+		}
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 
-		public string Role { get; set; }
+		public virtual ICollection<VolunteerSignups> VolunteerSignups { get; set; }
 
-		public ICollection<VolunteerSignups> VolunteerSignups { get; set; }
+		public virtual ICollection<Events> Events { get; set; }
 
-		public ICollection<Events> Events { get; set; }
-
-		public ICollection<StatusHistory> StatusHistories { get; set; }
+		public virtual ICollection<StatusHistory> StatusHistories { get; set; }
 	}
 }

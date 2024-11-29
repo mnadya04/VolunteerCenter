@@ -2,25 +2,29 @@
 {
 	public class Events
 	{
-		public int EventId { get; set; }
+		public Events()
+		{
+			this.EventId = Guid.NewGuid().ToString();
+		}
+		public string EventId { get; set; }
 		public string Name { get; set; }
 		public string Description { get; set; }
 		public DateTime Deadline { get; set; }
-		public int LocationId { get; set; }
-		public Locations Location { get; set; }
-		public decimal Budget { get; set; }
+		public string LocationId { get; set; }
+		public virtual Locations Location { get; set; }
+		public double Budget { get; set; }
 
-		public int CategoryId { get; set; }
-		public Categories Category { get; set; }
+		public string CategoryId { get; set; }
+		public virtual Categories Category { get; set; }
 
 
-		public int CreatedBy {  get; set; }
-		public Users User { get; set; }
+		public string CreatedBy {  get; set; }
+		public virtual Users User { get; set; }
 
 		// Event Status: Waiting, Assigned, InProgress, Completed, or Canceled
 		public string Status { get; set; }
 
-		public ICollection<VolunteerSignups> VolunteerSignups { get; set; }
-		public ICollection<StatusHistory> StatusHistories { get; set; }
+		public virtual ICollection<VolunteerSignups> VolunteerSignups { get; set; }
+		public virtual ICollection<StatusHistory> StatusHistories { get; set; }
 	}
 }

@@ -4,11 +4,15 @@ namespace VolunteerCenterProject.Models
 {
 	public class Categories
 	{
-		public int CategoryId { get; set; }
+		public Categories()
+		{
+			this.CategoryId = Guid.NewGuid().ToString();
+		}
+		public string CategoryId { get; set; }
 		public string Name { get; set; }
 		public string Description { get; set; }
 
 		// Navigation Property
-		public ICollection<Events> Events { get; set; }
+		public virtual ICollection<Events> Events { get; set; }
 	}
 }
