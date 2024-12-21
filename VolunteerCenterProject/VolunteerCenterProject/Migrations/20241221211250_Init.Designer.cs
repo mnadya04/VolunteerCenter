@@ -12,7 +12,7 @@ using VolunteerCenterProject.Data;
 namespace VolunteerCenterProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241129222835_Init")]
+    [Migration("20241221211250_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -104,12 +104,10 @@ namespace VolunteerCenterProject.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -146,12 +144,10 @@ namespace VolunteerCenterProject.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -161,7 +157,7 @@ namespace VolunteerCenterProject.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("VolunteerCenterProject.Models.Categories", b =>
+            modelBuilder.Entity("VolunteerCenterProject.Models.Category", b =>
                 {
                     b.Property<string>("CategoryId")
                         .HasColumnType("nvarchar(450)");
@@ -179,7 +175,7 @@ namespace VolunteerCenterProject.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("VolunteerCenterProject.Models.Events", b =>
+            modelBuilder.Entity("VolunteerCenterProject.Models.Event", b =>
                 {
                     b.Property<string>("EventId")
                         .HasColumnType("nvarchar(450)");
@@ -225,7 +221,7 @@ namespace VolunteerCenterProject.Migrations
                     b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("VolunteerCenterProject.Models.Locations", b =>
+            modelBuilder.Entity("VolunteerCenterProject.Models.Location", b =>
                 {
                     b.Property<string>("LocationId")
                         .HasColumnType("nvarchar(450)");
@@ -283,7 +279,7 @@ namespace VolunteerCenterProject.Migrations
                     b.ToTable("statusHistories");
                 });
 
-            modelBuilder.Entity("VolunteerCenterProject.Models.Users", b =>
+            modelBuilder.Entity("VolunteerCenterProject.Models.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -396,7 +392,7 @@ namespace VolunteerCenterProject.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("VolunteerCenterProject.Models.Users", null)
+                    b.HasOne("VolunteerCenterProject.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -405,7 +401,7 @@ namespace VolunteerCenterProject.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("VolunteerCenterProject.Models.Users", null)
+                    b.HasOne("VolunteerCenterProject.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -420,7 +416,7 @@ namespace VolunteerCenterProject.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("VolunteerCenterProject.Models.Users", null)
+                    b.HasOne("VolunteerCenterProject.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -429,28 +425,28 @@ namespace VolunteerCenterProject.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("VolunteerCenterProject.Models.Users", null)
+                    b.HasOne("VolunteerCenterProject.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("VolunteerCenterProject.Models.Events", b =>
+            modelBuilder.Entity("VolunteerCenterProject.Models.Event", b =>
                 {
-                    b.HasOne("VolunteerCenterProject.Models.Categories", "Category")
+                    b.HasOne("VolunteerCenterProject.Models.Category", "Category")
                         .WithMany("Events")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("VolunteerCenterProject.Models.Users", "User")
+                    b.HasOne("VolunteerCenterProject.Models.User", "User")
                         .WithMany("Events")
                         .HasForeignKey("CreatedBy")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("VolunteerCenterProject.Models.Locations", "Location")
+                    b.HasOne("VolunteerCenterProject.Models.Location", "Location")
                         .WithMany("Events")
                         .HasForeignKey("LocationId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -465,13 +461,13 @@ namespace VolunteerCenterProject.Migrations
 
             modelBuilder.Entity("VolunteerCenterProject.Models.StatusHistory", b =>
                 {
-                    b.HasOne("VolunteerCenterProject.Models.Users", "User")
+                    b.HasOne("VolunteerCenterProject.Models.User", "User")
                         .WithMany("StatusHistories")
                         .HasForeignKey("ChangedBy")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("VolunteerCenterProject.Models.Events", "Event")
+                    b.HasOne("VolunteerCenterProject.Models.Event", "Event")
                         .WithMany("StatusHistories")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -484,13 +480,13 @@ namespace VolunteerCenterProject.Migrations
 
             modelBuilder.Entity("VolunteerCenterProject.Models.VolunteerSignups", b =>
                 {
-                    b.HasOne("VolunteerCenterProject.Models.Events", "Event")
+                    b.HasOne("VolunteerCenterProject.Models.Event", "Event")
                         .WithMany("VolunteerSignups")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("VolunteerCenterProject.Models.Users", "User")
+                    b.HasOne("VolunteerCenterProject.Models.User", "User")
                         .WithMany("VolunteerSignups")
                         .HasForeignKey("VolunteerId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -501,24 +497,24 @@ namespace VolunteerCenterProject.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("VolunteerCenterProject.Models.Categories", b =>
+            modelBuilder.Entity("VolunteerCenterProject.Models.Category", b =>
                 {
                     b.Navigation("Events");
                 });
 
-            modelBuilder.Entity("VolunteerCenterProject.Models.Events", b =>
+            modelBuilder.Entity("VolunteerCenterProject.Models.Event", b =>
                 {
                     b.Navigation("StatusHistories");
 
                     b.Navigation("VolunteerSignups");
                 });
 
-            modelBuilder.Entity("VolunteerCenterProject.Models.Locations", b =>
+            modelBuilder.Entity("VolunteerCenterProject.Models.Location", b =>
                 {
                     b.Navigation("Events");
                 });
 
-            modelBuilder.Entity("VolunteerCenterProject.Models.Users", b =>
+            modelBuilder.Entity("VolunteerCenterProject.Models.User", b =>
                 {
                     b.Navigation("Events");
 

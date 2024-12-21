@@ -11,10 +11,10 @@ namespace VolunteerCenterProject.Models
 		public string SignupId { get; set; }
 
 		public string VolunteerId { get; set; }
-		public virtual Users User { get; set; }
+		public virtual User User { get; set; }
 
 		public string EventId { get; set; }
-		public virtual Events Event { get; set; }
+		public virtual Event Event { get; set; }
 
 		// Current Status for Volunteer in this Event
 		public string Status { get; set; } // E.g., SignedUp, InProgress, Completed, Canceled

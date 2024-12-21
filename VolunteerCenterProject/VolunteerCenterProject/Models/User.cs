@@ -2,9 +2,9 @@
 
 namespace VolunteerCenterProject.Models
 {
-	public class Users : IdentityUser<string>
+	public class User : IdentityUser<string>
 	{
-		public Users()
+		public User()
 		{
 			this.Id = Guid.NewGuid().ToString();
 		}
@@ -13,7 +13,7 @@ namespace VolunteerCenterProject.Models
 
 		public virtual ICollection<VolunteerSignups> VolunteerSignups { get; set; }
 
-		public virtual ICollection<Events> Events { get; set; }
+		public virtual ICollection<Event> Events { get; set; }
 
 		public virtual ICollection<StatusHistory> StatusHistories { get; set; }
 	}

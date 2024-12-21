@@ -8,30 +8,30 @@ using VolunteerCenterProject.Models;
 
 namespace VolunteerCenterProject.Data
 {
-	public class ApplicationDbContext : IdentityDbContext<Users, IdentityRole, string>
+	public class ApplicationDbContext : IdentityDbContext<User, IdentityRole, string>
 	{
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
 			: base(options)
 		{
 		}
-		public  DbSet<Locations> Locations { get; set; }
-		public  DbSet<Categories> Categories { get; set; }
+		public  DbSet<Location> Locations { get; set; }
+		public  DbSet<Category> Categories { get; set; }
 		public  DbSet<VolunteerSignups> Signups { get; set; }
-		//public  DbSet<Users> Users { get; set; } -- removed because IdentityDbContext<Users.. will set up 
-		public DbSet<StatusHistory> statusHistories { get; set; }
-		public  DbSet<Events> Events { get; set; }
+		//override public  DbSet<User> Users { get; set; } //-- removed because IdentityDbContext<Users.. will set up 
+		public  DbSet<StatusHistory> statusHistories { get; set; }
+		public  DbSet<Event> Events { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder); 
 
 			#region Categories
-			modelBuilder.Entity<Categories>()
+			modelBuilder.Entity<Category>()
 				.HasKey(x => x.CategoryId);
 			#endregion
 
 			#region Locations
-			modelBuilder.Entity<Locations>()
+			modelBuilder.Entity<Location>()
 				.HasKey(c => c.LocationId);
 			#endregion
 
@@ -73,19 +73,18 @@ namespace VolunteerCenterProject.Data
 
 			#endregion
 
-			
 			#region Events
-			modelBuilder.Entity<Events>()
+			modelBuilder.Entity<Event>()
 				.HasKey(c => c.EventId);
 
-			modelBuilder.Entity<Events>()
+			modelBuilder.Entity<Event>()
 				.HasOne(x => x.Category)
 				.WithMany(x => x.Events)
 				.HasForeignKey(x => x.CategoryId)
 				.OnDelete(DeleteBehavior.Restrict);
 
 
-			modelBuilder.Entity<Events>()
+			modelBuilder.Entity<Event>()
 				.HasOne(x => x.Location)
 				.WithMany(x => x.Events)
 				.HasForeignKey(x => x.LocationId)
@@ -93,7 +92,7 @@ namespace VolunteerCenterProject.Data
 
 
 
-			modelBuilder.Entity<Events>()
+			modelBuilder.Entity<Event>()
 				.HasOne(x => x.User)
 				.WithMany(u => u.Events)
 				.HasForeignKey(x => x.CreatedBy)

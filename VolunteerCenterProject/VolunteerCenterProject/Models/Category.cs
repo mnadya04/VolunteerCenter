@@ -2,9 +2,9 @@
 
 namespace VolunteerCenterProject.Models
 {
-	public class Categories
+	public class Category
 	{
-		public Categories()
+		public Category()
 		{
 			this.CategoryId = Guid.NewGuid().ToString();
 		}
@@ -13,6 +13,6 @@ namespace VolunteerCenterProject.Models
 		public string Description { get; set; }
 
 		// Navigation Property
-		public virtual ICollection<Events> Events { get; set; }
+		public virtual ICollection<Event> Events { get; set; }
 	}
 }

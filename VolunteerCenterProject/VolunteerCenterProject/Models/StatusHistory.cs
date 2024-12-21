@@ -13,10 +13,10 @@ namespace VolunteerCenterProject.Models
 
 		public int StatusHistoryId { get; set; }
 
-		public virtual Events Event { get; set; }
+		public virtual Event Event { get; set; }
 
 		public string ChangedBy { get; set; }
-		public virtual Users User { get; set; }
+		public virtual User User { get; set; }
 
 		public string NewStatus { get; set; } // E.g., Waiting, Assigned, InProgress, Completed, Canceled
 		public DateTime ChangeDate { get; set; }

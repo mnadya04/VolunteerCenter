@@ -2,10 +2,10 @@
 
 namespace VolunteerCenterProject.Models
 {
-	public class Locations
+	public class Location
 	{
 
-		public Locations()
+		public Location()
 		{
 			this.LocationId = Guid.NewGuid().ToString();
 		}
@@ -15,6 +15,6 @@ namespace VolunteerCenterProject.Models
 		public string City { get; set; }
 		public string Country { get; set; }
 
-		public virtual ICollection<Events> Events { get; set; }
+		public virtual ICollection<Event> Events { get; set; }
 	}
 }

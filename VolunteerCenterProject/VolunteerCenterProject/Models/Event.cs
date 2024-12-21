@@ -1,8 +1,8 @@
 ﻿namespace VolunteerCenterProject.Models
 {
-	public class Events
+	public class Event
 	{
-		public Events()
+		public Event()
 		{
 			this.EventId = Guid.NewGuid().ToString();
 		}
@@ -11,15 +11,15 @@
 		public string Description { get; set; }
 		public DateTime Deadline { get; set; }
 		public string LocationId { get; set; }
-		public virtual Locations Location { get; set; }
+		public virtual Location Location { get; set; }
 		public double Budget { get; set; }
 
 		public string CategoryId { get; set; }
-		public virtual Categories Category { get; set; }
+		public virtual Category Category { get; set; }
 
 
 		public string CreatedBy {  get; set; }
-		public virtual Users User { get; set; }
+		public virtual User User { get; set; }
 
 		// Event Status: Waiting, Assigned, InProgress, Completed, or Canceled
 		public string Status { get; set; }
