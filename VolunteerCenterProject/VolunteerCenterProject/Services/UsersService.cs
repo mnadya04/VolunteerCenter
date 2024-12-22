@@ -81,7 +81,13 @@ namespace VolunteerCenterProject.Services
             UsersVM model = new UsersVM();
 
             model.Users = await this.context.Users
-                .Select(x => new UserVM())
+                .Select(x => new UserVM()
+                {
+                    Id = x.Id,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    Email = x.Email
+                })
                 //.Skip((page - 1) * itemsPerPage)
                 //.Take(itemsPerPage)
                 .ToListAsync();

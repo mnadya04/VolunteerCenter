@@ -31,13 +31,13 @@ namespace VolunteerCenterProject.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult Create(CreateUserVM model)
+		public async Task<IActionResult> Create(CreateUserVM model)
 		{
 
 			if (!ModelState.IsValid)
 				return View(model);
 
-			usersService.CreateAsync(model);
+			await usersService.CreateAsync(model);
 
 			return RedirectToAction("Index");
 
