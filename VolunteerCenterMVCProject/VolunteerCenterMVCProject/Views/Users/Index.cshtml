@@ -1,0 +1,20 @@
+﻿@model VolunteerCenterMVCProject.ViewModels.Users.UsersVM
+
+
+<div class="row">
+	<div class="col-1 b">Username</div>
+	<div class="col-1 b">First Name</div>
+	<div class="col-1 b">Last Name</div>
+</div>
+@foreach (var item in Model.Users)
+{
+	<div class="row">
+		<div class="col-1">@item.Email</div>
+		<div class="col-1">@item.FirstName</div>
+		<div class="col-1">@item.LastName</div>
+		<div class="col-1">
+			<a href="/Users/Edit?id=@item.Id">edit</a>
+			<a onclick="return confirm('Delete item?')" href="/Users/Delete?id=@item.Id">delete</a>
+		</div>
+	</div>
+}

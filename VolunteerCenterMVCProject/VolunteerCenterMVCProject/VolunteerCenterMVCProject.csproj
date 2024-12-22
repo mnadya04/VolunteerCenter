@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>aspnet-VolunteerCenterMVCProject-718b5a83-ff1a-44b7-b3e7-811e5d9f05c4</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.35" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.35" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.35" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.35" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.35" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.35">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.35" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.35" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.35">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>
