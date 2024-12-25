@@ -1,39 +1,48 @@
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using VolunteerCenterMVCProject.Data;
+using VolunteerCenterMVCProject.Models;
 using VolunteerCenterMVCProject.Services.Interfaces;
 using VolunteerCenterMVCProject.Services;
-using VolunteerCenterMVCProject.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-// Configure Identity
-builder.Services.AddIdentity<User, IdentityRole>(options =>
-{
-    options.SignIn.RequireConfirmedAccount = true;
-})
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
+// Identity configuration
+/*builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
+*/
+builder.Services.AddDefaultIdentity<User>()
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 
-// Register custom services
-builder.Services.AddScoped<IUsersService, UsersService>();
-
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-// Add Razor Pages
+// Add MVC and Razor Pages
+builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+// Register services
+builder.Services.AddTransient<IUsersService, UsersService>();
+
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Seed data on application startup
 if (app.Environment.IsDevelopment())
 {
+    using (var serviceScope = app.Services.CreateScope())
+    {
+        var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        dbContext.Database.Migrate();
+    }
+
+    app.UseDeveloperExceptionPage();
     app.UseMigrationsEndPoint();
 }
 else
@@ -42,6 +51,7 @@ else
     app.UseHsts();
 }
 
+// Configure middleware pipeline
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -50,10 +60,10 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapRazorPages();
-
+// Map routes
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapRazorPages();
 
 app.Run();

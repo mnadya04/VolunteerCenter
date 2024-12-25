@@ -31,7 +31,8 @@ namespace VolunteerCenterMVCProject.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Create(CreateUserVM model)
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(CreateUserVM model)
 		{
 
 			if (!ModelState.IsValid)
@@ -39,10 +40,16 @@ namespace VolunteerCenterMVCProject.Controllers
 
 			await usersService.CreateAsync(model);
 
+            return RedirectToPage("/Account/Login", new { area = "Identity" });
+
+        }
+
+
+        [HttpGet]
+		public async Task<IActionResult> Delete(string id)
+		{
+			await usersService.DeleteUserByIdAsync(id);
 			return RedirectToAction("Index");
-
 		}
-
-
 	}
 }

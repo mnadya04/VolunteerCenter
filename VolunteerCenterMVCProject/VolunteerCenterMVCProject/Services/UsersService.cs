@@ -30,10 +30,11 @@ namespace VolunteerCenterMVCProject.Services
             User user = new User()
             {
                 Email = model.Email,
-                NormalizedEmail = model.Email,
+                NormalizedEmail = model.Email.ToUpper(),
                 UserName = model.Email,
                 FirstName = model.FirstName,
-                LastName = model.LastName,
+                LastName = model.LastName ,
+                NormalizedUserName = model.Email.ToUpper()
             };
 
            
@@ -56,21 +57,27 @@ namespace VolunteerCenterMVCProject.Services
             if (roleExist)
             {
                 var result = await userManager.AddToRoleAsync(item, Constraints.VolunteerRole);
+
+                if (!result.Succeeded)
+                {
+                    throw new Exception(string.Join(Environment.NewLine, result.Errors.Select(e => e.Description)));
+                }
             }
+    }
 
+        public async Task DeleteUserByIdAsync(string id)
+        {
+            User item = await this.userManager.FindByIdAsync(id);
+
+            await userManager.DeleteAsync(item);
         }
 
-        public Task DeleteUserByIdAsync(string id)
+        public async Task<SelectList> GetAllUsersAsync()
         {
             throw new NotImplementedException();
         }
 
-        public Task<SelectList> GetAllUsersAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<UserVM> GetUserByIdAsync(string id)
+        public async Task<UserVM> GetUserByIdAsync(string id)
         {
             throw new NotImplementedException();
         }
