@@ -6,12 +6,13 @@ namespace VolunteerCenterMVCProject.Models
 	{
 		public StatusHistory()
 		{
-			this.EventId = Guid.NewGuid().ToString();
-		}		
-		
+			this.StatusHistoryId = Guid.NewGuid().ToString();
+		}
+
+
 		public string EventId { get; set; }
 
-		public int StatusHistoryId { get; set; }
+		public string StatusHistoryId { get; set; }
 
 		public virtual Event Event { get; set; }
 
@@ -20,7 +21,5 @@ namespace VolunteerCenterMVCProject.Models
 
 		public string NewStatus { get; set; } // E.g., Waiting, Assigned, InProgress, Completed, Canceled
 		public DateTime ChangeDate { get; set; }
-		//public string Notes { get; set; } // Optional notes regarding the status change
-	//	public string Attachment { get; set; } 
 	}
 }

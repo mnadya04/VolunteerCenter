@@ -31,18 +31,42 @@ namespace VolunteerCenterMVCProject.Controllers
 		}
 
 		[HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateUserVM model)
 		{
 
 			if (!ModelState.IsValid)
 				return View(model);
 
-			await usersService.CreateAsync(model);
+			await usersService.CreateUserAsync(model);
 
-            return RedirectToPage("/Account/Login", new { area = "Identity" });
-
+			//return RedirectToPage("/Account/Login", new { area = "Identity" });
+			return RedirectToAction("Index");
         }
+
+		[HttpGet]
+		public async Task<IActionResult> Edit(string id)
+		{
+			var user = await usersService.GetUserByIdAsync(id);
+
+			if (user == null)
+				return NotFound();
+
+
+			return View(user);
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Edit(EditUserVM model)
+		{
+			if (!ModelState.IsValid)
+				return View(model);
+
+			await usersService.UpdateUserAsync(model);
+
+			return RedirectToAction("Index");
+			
+		}
 
 
         [HttpGet]

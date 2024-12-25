@@ -251,11 +251,8 @@ namespace VolunteerCenterMVCProject.Data.Migrations
 
             modelBuilder.Entity("VolunteerCenterMVCProject.Models.StatusHistory", b =>
                 {
-                    b.Property<int>("StatusHistoryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StatusHistoryId"), 1L, 1);
+                    b.Property<string>("StatusHistoryId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("ChangeDate")
                         .HasColumnType("datetime2");

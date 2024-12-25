@@ -24,32 +24,26 @@ namespace VolunteerCenterMVCProject.Services
             this.roleManager = roleManager;
         }
 
-        public async Task CreateAsync(CreateUserVM model)
+    
+
+        public async Task CreateUserAsync(CreateUserVM model)
         {
 
             User user = new User()
             {
                 Email = model.Email,
-                NormalizedEmail = model.Email.ToUpper(),
+                NormalizedEmail = model.Email,
+                EmailConfirmed = true,
+                SecurityStamp = string.Empty,
                 UserName = model.Email,
                 FirstName = model.FirstName,
                 LastName = model.LastName ,
-                NormalizedUserName = model.Email.ToUpper()
+                NormalizedUserName = model.Email
             };
 
            
             await this.userManager.CreateAsync(user, model.Password);
-
-            //check if there is problem with adding new user
-         /*   if (!createResult.Succeeded)
-            {
-                foreach (var error in createResult.Errors)
-                {
-                    // Log the error or handle it accordingly
-                    Console.WriteLine(error.Description);
-                }
-                return;
-            }*/
+           
             User item = await userManager.FindByNameAsync(user.Email);
 
             bool roleExist = await roleManager.RoleExistsAsync(Constraints.VolunteerRole);

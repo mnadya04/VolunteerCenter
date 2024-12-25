@@ -12,7 +12,7 @@ using VolunteerCenterMVCProject.Data;
 namespace VolunteerCenterMVCProject.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241222213728_Init")]
+    [Migration("20241225155723_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -253,11 +253,8 @@ namespace VolunteerCenterMVCProject.Data.Migrations
 
             modelBuilder.Entity("VolunteerCenterMVCProject.Models.StatusHistory", b =>
                 {
-                    b.Property<int>("StatusHistoryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StatusHistoryId"), 1L, 1);
+                    b.Property<string>("StatusHistoryId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("ChangeDate")
                         .HasColumnType("datetime2");
