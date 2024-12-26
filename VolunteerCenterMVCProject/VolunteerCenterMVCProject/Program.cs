@@ -5,6 +5,9 @@ using VolunteerCenterMVCProject.Data;
 using VolunteerCenterMVCProject.Models;
 using VolunteerCenterMVCProject.Services.Interfaces;
 using VolunteerCenterMVCProject.Services;
+using Microsoft.Extensions.DependencyInjection;
+using static System.Formats.Asn1.AsnWriter;
+using HousekeeperApp.Data.Seeding;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,8 +39,13 @@ if (app.Environment.IsDevelopment())
     using (var serviceScope = app.Services.CreateScope())
     {
         var dbContext = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        dbContext.Database.Migrate();
-    }
+		dbContext.Database.Migrate();
+
+		var serviceProvider = serviceScope.ServiceProvider;
+
+        var seedData = new SeedData();
+        await seedData.SeedAsync(dbContext, serviceProvider);
+	}
 
     app.UseDeveloperExceptionPage();
     app.UseMigrationsEndPoint();
@@ -64,3 +72,5 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 app.Run();
+
+

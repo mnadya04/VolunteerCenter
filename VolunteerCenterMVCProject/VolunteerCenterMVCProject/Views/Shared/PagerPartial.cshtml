@@ -1,0 +1,36 @@
+﻿@model VolunteerCenterMVCProject.ViewModels.Shared.PagerVM
+
+@{
+	string controller = ViewContext.RouteData.Values["controller"].ToString();
+	string action = ViewContext.RouteData.Values["action"].ToString();
+	string pagerQueryString = "";
+	string itemsPerPageQueryString = "";
+
+	foreach (var key in this.ViewContext.HttpContext.Request.Query.Keys)
+	{
+		if (key != "Pager.Page")
+			pagerQueryString += key + "=" + this.ViewContext.HttpContext.Request.Query[key] + "&";
+
+		if (!key.StartsWith("Pager."))
+			itemsPerPageQueryString += key + "=" + this.ViewContext.HttpContext.Request.Query[key] + "&";
+	}
+}
+	
+@for (int i = 1; i <= Model.PagesCount; i++)
+{
+	<a href="/@controller/@action?Pager.Page=@i&@pagerQueryString">@i</a>
+}
+
+<script>
+	function ddlItemsPerPage_OnChange() {
+		var ddlItemsPerPage = document.getElementById('ddlItemsPerPage');
+
+		document.location.href = "/@controller/@action?Pager.ItemsPerPage=" + ddlItemsPerPage.value + "&@Html.Raw(itemsPerPageQueryString)";
+	}
+</script>
+
+<select id="ddlItemsPerPage" onchange="ddlItemsPerPage_OnChange()">
+	<option value="2" selected="@(Model.ItemsPerPage == 2)">2</option>
+	<option value="5" selected="@(Model.ItemsPerPage == 5)">5</option>
+	<option value="10" selected="@(Model.ItemsPerPage == 10)">10</option>
+</select>

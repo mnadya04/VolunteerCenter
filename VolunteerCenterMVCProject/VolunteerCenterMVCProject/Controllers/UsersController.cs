@@ -1,13 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections;
+using VolunteerCenterMVCProject.Common;
 using VolunteerCenterMVCProject.Models;
 using VolunteerCenterMVCProject.Services;
 using VolunteerCenterMVCProject.Services.Interfaces;
+using VolunteerCenterMVCProject.ViewModels.Shared;
 using VolunteerCenterMVCProject.ViewModels.Users;
 
 namespace VolunteerCenterMVCProject.Controllers
 {
 
-
+	[Authorize(Roles = Constants.AdminRole)]
 	public class UsersController : Controller
 	{
 		private readonly IUsersService usersService;
@@ -18,10 +22,30 @@ namespace VolunteerCenterMVCProject.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Index()
+		public async Task<IActionResult> Index(UsersVM model)
 		{
-			var items = await usersService.GetUsersAsync();
-			return View(items);
+			model.Pager ??= new PagerVM();
+
+
+			model.Pager ??= new PagerVM();
+
+			model.Pager.Page = model.Pager.Page <= 0
+										? 1
+										: model.Pager.Page;
+
+			model.Pager.ItemsPerPage = model.Pager.ItemsPerPage <= 0
+										? 10
+										: model.Pager.ItemsPerPage;
+
+			int c = usersService.Count();
+			model.Pager.PagesCount =
+			  (int)Math.Ceiling(usersService.Count() / (double)model.Pager.ItemsPerPage);
+
+			var result = await usersService.GetUsersAsync(model.Pager.Page, model.Pager.ItemsPerPage, model.Pager.PagesCount);
+
+			model.Users = result.Users;
+
+			return View(model);
 		}
 
 		[HttpGet]
@@ -40,14 +64,13 @@ namespace VolunteerCenterMVCProject.Controllers
 
 			await usersService.CreateUserAsync(model);
 
-			//return RedirectToPage("/Account/Login", new { area = "Identity" });
 			return RedirectToAction("Index");
         }
 
 		[HttpGet]
 		public async Task<IActionResult> Edit(string id)
 		{
-			var user = await usersService.GetUserByIdAsync(id);
+			var user = await usersService.GetUserEditByIdAsync(id);
 
 			if (user == null)
 				return NotFound();

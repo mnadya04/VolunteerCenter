@@ -4,6 +4,8 @@ namespace VolunteerCenterMVCProject.ViewModels.Users
 {
 	public class EditUserVM
 	{
+		public string Id { get; set; }
+
 		[Required(ErrorMessage ="This filed is required")]
 		[Display(Name = "First Name")]
 

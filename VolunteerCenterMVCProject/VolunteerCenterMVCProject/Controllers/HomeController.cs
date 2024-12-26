@@ -8,12 +8,10 @@ namespace VolunteerCenterMVCProject.Controllers
     {
 
         private readonly ILogger<HomeController> _logger;
-        //private readonly IEmailSender emailSender;
-        //private readonly IUsersService service;
+
 
         public HomeController(ILogger<HomeController> logger)
         {
-            //this.emailSender = emailSender;
             _logger = logger;
         }
 
