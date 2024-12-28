@@ -1,0 +1,36 @@
+﻿@model VolunteerCenterMVCProject.ViewModels.Categories.CategoryVM
+
+
+<form action="/Categories/Edit" method="post">
+    <div class="grid">
+        @Html.HiddenFor(m => m.Id)
+        <div class="row">
+            <div class="col-1">@Html.DisplayNameFor(m => m.Name)</div>
+            <div class="col-2">
+                @Html.TextBoxFor(m => m.Name)
+            </div>
+            <div>
+                @Html.ValidationMessageFor(m => m.Name)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-1">@Html.DisplayNameFor(m => m.Description)</div>
+            <div class="col-2">
+                @Html.TextBoxFor(m => m.Description)
+            </div>
+            <div>
+                @Html.ValidationMessageFor(m => m.Description)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <input type="submit" value="Save" />
+                <a href="/Categories/Index">Back</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

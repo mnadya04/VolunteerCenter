@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
+using System.Linq.Expressions;
 using VolunteerCenterMVCProject.Common;
 using VolunteerCenterMVCProject.Models;
 using VolunteerCenterMVCProject.Services;
@@ -14,19 +15,16 @@ namespace VolunteerCenterMVCProject.Controllers
 	[Authorize(Roles = Constants.AdminRole)]
 	public class UsersController : Controller
 	{
-		private readonly IUsersService usersService;
+		private readonly IUsersService service;
 
 		public UsersController(IUsersService userService)
 		{
-			this.usersService = userService;
+			this.service = userService;
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Index(UsersVM model)
-		{
-			model.Pager ??= new PagerVM();
-
-
+		public async Task<IActionResult> Index(IndexVM model)
+		{ 
 			model.Pager ??= new PagerVM();
 
 			model.Pager.Page = model.Pager.Page <= 0
@@ -37,11 +35,16 @@ namespace VolunteerCenterMVCProject.Controllers
 										? 10
 										: model.Pager.ItemsPerPage;
 
-			int c = usersService.Count();
-			model.Pager.PagesCount =
-			  (int)Math.Ceiling(usersService.Count() / (double)model.Pager.ItemsPerPage);
+			Expression<Func<UserVM, bool>> filter = i =>
+			   (String.IsNullOrEmpty(model.Email) || i.Email.Contains(model.Email)) &&
+			   (String.IsNullOrEmpty(model.FirstName) || i.FirstName.Contains(model.FirstName)) &&
+			   (String.IsNullOrEmpty(model.LastName) || i.LastName.Contains(model.LastName));
 
-			var result = await usersService.GetUsersAsync(model.Pager.Page, model.Pager.ItemsPerPage, model.Pager.PagesCount);
+			model.Pager.PagesCount =
+			  (int)Math.Ceiling(service.Count(filter) / (double)model.Pager.ItemsPerPage);
+
+			IndexVM result = await service.GetAllAsync(filter, model.Pager.Page, model.Pager.ItemsPerPage, model.Pager.PagesCount);
+
 
 			model.Users = result.Users;
 
@@ -55,14 +58,13 @@ namespace VolunteerCenterMVCProject.Controllers
 		}
 
 		[HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateUserVM model)
 		{
 
 			if (!ModelState.IsValid)
 				return View(model);
 
-			await usersService.CreateUserAsync(model);
+			await service.CreateAsync(model);
 
 			return RedirectToAction("Index");
         }
@@ -70,7 +72,7 @@ namespace VolunteerCenterMVCProject.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Edit(string id)
 		{
-			var user = await usersService.GetUserEditByIdAsync(id);
+			var user = await service.EditAsync(id);
 
 			if (user == null)
 				return NotFound();
@@ -85,7 +87,7 @@ namespace VolunteerCenterMVCProject.Controllers
 			if (!ModelState.IsValid)
 				return View(model);
 
-			await usersService.UpdateUserAsync(model);
+			await service.UpdateAsync(model);
 
 			return RedirectToAction("Index");
 			
@@ -95,7 +97,7 @@ namespace VolunteerCenterMVCProject.Controllers
         [HttpGet]
 		public async Task<IActionResult> Delete(string id)
 		{
-			await usersService.DeleteUserByIdAsync(id);
+			await service.DeleteAsync(id);
 			return RedirectToAction("Index");
 		}
 	}

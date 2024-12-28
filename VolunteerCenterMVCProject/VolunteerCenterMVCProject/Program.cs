@@ -5,20 +5,32 @@ using VolunteerCenterMVCProject.Data;
 using VolunteerCenterMVCProject.Models;
 using VolunteerCenterMVCProject.Services.Interfaces;
 using VolunteerCenterMVCProject.Services;
-using Microsoft.Extensions.DependencyInjection;
-using static System.Formats.Asn1.AsnWriter;
 using HousekeeperApp.Data.Seeding;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
+
+//session config
+
+builder.Services.AddSession(options =>
+{
+    options.Cookie.HttpOnly = true;
+});
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+    options.SlidingExpiration = true;
+});
+
+
 // Identity configuration
-builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<User>(/*options => options.SignIn.RequireConfirmedAccount = true*/)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -29,11 +41,12 @@ builder.Services.AddRazorPages();
 
 // Register services
 builder.Services.AddTransient<IUsersService, UsersService>();
+builder.Services.AddTransient<ICategoriesService, CategoriesService>();
 
 
 var app = builder.Build();
 
-// Seed data on application startup
+// Seed data 
 if (app.Environment.IsDevelopment())
 {
     using (var serviceScope = app.Services.CreateScope())
@@ -56,16 +69,15 @@ else
     app.UseHsts();
 }
 
-// Configure middleware pipeline
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseSession();
 
 app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Map routes
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

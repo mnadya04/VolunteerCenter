@@ -27,16 +27,23 @@ namespace VolunteerCenterMVCProject.Services
 		}
 
 
-		public int Count(Expression<Func<User, bool>> filter = null)
+		public int Count(Expression<Func<UserVM, bool>> filter = null)
 		{
-			IQueryable<User> query = context.Users;
+			IQueryable<UserVM> query = this.context.Users.
+							Select(x => new UserVM()
+							{
+								Id = x.Id,
+								FirstName = x.FirstName,
+								LastName = x.LastName,
+								Email = x.Email
+							});
 
 			if (filter != null)
 				query = query.Where(filter);
 
 			return query.Count();
 		}
-		public async Task CreateUserAsync(CreateUserVM model)
+		public async Task CreateAsync(CreateUserVM model)
 		{
 
 			User user = new User()
@@ -56,9 +63,9 @@ namespace VolunteerCenterMVCProject.Services
 
 			User item = await userManager.FindByNameAsync(user.Email);
 
-			await userManager.AddToRoleAsync(user,Constants.VolunteerRole);
+			await userManager.AddToRoleAsync(user, Constants.VolunteerRole);
 
-			/*bool roleExist = await roleManager.RoleExistsAsync(Constants.VolunteerRole);
+			bool roleExist = await roleManager.RoleExistsAsync(Constants.VolunteerRole);
 
 			if (roleExist)
 			{
@@ -68,15 +75,15 @@ namespace VolunteerCenterMVCProject.Services
 				{
 					throw new Exception(string.Join(Environment.NewLine, result.Errors.Select(e => e.Description)));
 				}
-			}*/
+			}
 		}
-		public async Task DeleteUserByIdAsync(string id)
+		public async Task DeleteAsync(string id)
 		{
 			User item = await this.userManager.FindByIdAsync(id);
 
 			await userManager.DeleteAsync(item);
 		}
-		public async Task UpdateUserAsync(EditUserVM model)
+		public async Task UpdateAsync(EditUserVM model)
 		{
 			User item = await context.Users.FindAsync(model.Id);
 
@@ -86,14 +93,14 @@ namespace VolunteerCenterMVCProject.Services
 			await context.SaveChangesAsync();
 
 		}
-		
-		public async Task<UserVM> GetUserByIdAsync(string id)
+
+		public async Task<UserVM> GetUserAsync(string id)
 		{
 			User item = await context.Users.FindAsync(id);
 
 			UserVM model = null;
 
-			if(item != null)
+			if (item != null)
 			{
 				model = new UserVM()
 				{
@@ -107,7 +114,7 @@ namespace VolunteerCenterMVCProject.Services
 			return model;
 
 		}
-		public async Task<EditUserVM> GetUserEditByIdAsync(string id)
+		public async Task<EditUserVM> EditAsync(string id)
 		{
 			User item = await context.Users.FindAsync(id);
 			EditUserVM model = null;
@@ -125,24 +132,29 @@ namespace VolunteerCenterMVCProject.Services
 			return model;
 		}
 
-		
-		public async Task<UsersVM> GetUsersAsync(int page = 1, int itemsPerPage = 1, int count = 10)
+
+		public async Task<IndexVM> GetAllAsync(Expression<Func<UserVM, bool>> filter, int page, int itemsPerPage, int count)
 		{
 
-			UsersVM model = new UsersVM()
-			;
+			IndexVM model = new IndexVM();
 
-			model.Users = await this.context.Users
-				.Skip((page - 1) * itemsPerPage)
-				.Take(itemsPerPage)
-				.Select(x => new UserVM()
-				{
-					Id = x.Id,
-					FirstName = x.FirstName,
-					LastName = x.LastName,
-					Email = x.Email
-				})
-				.ToListAsync();
+			IQueryable<UserVM> query = this.context.Users.
+				Select(x => new UserVM()
+			{
+				Id = x.Id,
+				FirstName = x.FirstName,
+				LastName = x.LastName,
+				Email = x.Email
+			});
+
+			if (filter != null)
+				query = query.Where(filter);
+
+
+			model.Users = await query
+					.Skip((page - 1) * itemsPerPage)
+					.Take(itemsPerPage)
+					.ToListAsync();
 
 
 			return model;

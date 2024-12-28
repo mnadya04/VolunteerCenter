@@ -7,15 +7,13 @@ namespace VolunteerCenterMVCProject.Services.Interfaces
 {
 	public interface IUsersService
 	{
+		int Count(Expression<Func<UserVM, bool>> filter = null);
 
-		Task CreateUserAsync(CreateUserVM model);
-
-		Task<EditUserVM> GetUserEditByIdAsync(string id);
-
-		Task DeleteUserByIdAsync(string id);
-		Task UpdateUserAsync(EditUserVM model);
-		int Count(Expression<Func<User, bool>> filter = null);
-		Task<UserVM> GetUserByIdAsync(string id);
-		Task<UsersVM> GetUsersAsync(int page = 1, int itemsPerPage = 1, int count = 10);
+		Task CreateAsync(CreateUserVM model);
+		Task DeleteAsync(string id);
+		Task UpdateAsync(EditUserVM model);
+		Task<UserVM> GetUserAsync(string id);
+		Task<EditUserVM> EditAsync(string id);
+		Task<IndexVM> GetAllAsync(Expression<Func<UserVM, bool>> filter,int page, int itemsPerPage, int count);
 	}
 }
