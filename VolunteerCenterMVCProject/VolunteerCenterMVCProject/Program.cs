@@ -30,10 +30,9 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 
 // Identity configuration
-builder.Services.AddDefaultIdentity<User>(/*options => options.SignIn.RequireConfirmedAccount = true*/)
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
-
+builder.Services.AddDefaultIdentity<User>()
+	.AddRoles<IdentityRole>()
+	.AddEntityFrameworkStores<ApplicationDbContext>();
 
 // Add MVC and Razor Pages
 builder.Services.AddControllersWithViews();

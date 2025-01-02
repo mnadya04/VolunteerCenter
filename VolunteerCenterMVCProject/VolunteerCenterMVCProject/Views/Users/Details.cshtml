@@ -1,0 +1,23 @@
+﻿@model VolunteerCenterMVCProject.ViewModels.Users.UserVM
+
+<div class="row">
+</div>
+<div class="container mt-4">
+
+	<div class="row text-center border-bottom pb-2 mb-2">
+		<div class="col-3 font-weight-bold">Username</div>
+		<div class="col-3 font-weight-bold">First Name</div>
+		<div class="col-3 font-weight-bold">Last Name</div>
+		<div class="col-3 font-weight-bold">Actions</div>
+	</div>
+
+	
+		<div class="row text-center align-items-center py-2 border-bottom">
+			<div class="col-3">@Model.Email</div>
+			<div class="col-3">@Model.FirstName</div>
+			<div class="col-3">@Model.LastName</div>
+			<div class="col-3">
+				<a href="/Users/Edit?id=@Model.Id" class="btn btn-sm btn-primary me-2">Edit</a>
+			</div>
+		</div>
+	

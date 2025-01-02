@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using VolunteerCenterMVCProject.Models;
+using VolunteerCenterMVCProject.ViewModels.Categories;
 
 namespace VolunteerCenterMVCProject.Data
 {
@@ -17,13 +18,14 @@ namespace VolunteerCenterMVCProject.Data
 		public DbSet<StatusHistory> statusHistories { get; set; }
 		public DbSet<Event> Events { get; set; }
 
+
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
 
 			#region Categories
 			modelBuilder.Entity<Category>()
-				.HasKey(x => x.CategoryId);
+			.HasKey(x => x.CategoryId);
 			#endregion
 
 			#region Locations
@@ -103,10 +105,7 @@ namespace VolunteerCenterMVCProject.Data
 
 			optionsBuilder.UseLazyLoadingProxies();
 
-			/*if (!optionsBuilder.IsConfigured)
-			{
-				optionsBuilder.UseLazyLoadingProxies();
-			}*/
+
 		}
 
 

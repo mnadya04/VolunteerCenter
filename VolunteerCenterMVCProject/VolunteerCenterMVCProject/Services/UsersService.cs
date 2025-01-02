@@ -50,7 +50,6 @@ namespace VolunteerCenterMVCProject.Services
 			{
 				Email = model.Email,
 				NormalizedEmail = model.Email,
-				EmailConfirmed = true,
 				SecurityStamp = string.Empty,
 				UserName = model.Email,
 				FirstName = model.FirstName,

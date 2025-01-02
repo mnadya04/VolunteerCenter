@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
 using System.Linq.Expressions;
+using System.Security.Claims;
 using VolunteerCenterMVCProject.Common;
 using VolunteerCenterMVCProject.Models;
 using VolunteerCenterMVCProject.Services;
@@ -12,7 +13,6 @@ using VolunteerCenterMVCProject.ViewModels.Users;
 namespace VolunteerCenterMVCProject.Controllers
 {
 
-	[Authorize(Roles = Constants.AdminRole)]
 	public class UsersController : Controller
 	{
 		private readonly IUsersService service;
@@ -23,8 +23,9 @@ namespace VolunteerCenterMVCProject.Controllers
 		}
 
 		[HttpGet]
+		[Authorize(Roles = Constants.AdminRole)]
 		public async Task<IActionResult> Index(IndexVM model)
-		{ 
+		{
 			model.Pager ??= new PagerVM();
 
 			model.Pager.Page = model.Pager.Page <= 0
@@ -35,7 +36,10 @@ namespace VolunteerCenterMVCProject.Controllers
 										? 10
 										: model.Pager.ItemsPerPage;
 
+			string loggedUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
 			Expression<Func<UserVM, bool>> filter = i =>
+				i.Id != loggedUserId &&
 			   (String.IsNullOrEmpty(model.Email) || i.Email.Contains(model.Email)) &&
 			   (String.IsNullOrEmpty(model.FirstName) || i.FirstName.Contains(model.FirstName)) &&
 			   (String.IsNullOrEmpty(model.LastName) || i.LastName.Contains(model.LastName));
@@ -51,14 +55,17 @@ namespace VolunteerCenterMVCProject.Controllers
 			return View(model);
 		}
 
+
 		[HttpGet]
+		[Authorize(Roles = Constants.AdminRole)]
 		public IActionResult Create()
 		{
 			return View();
 		}
 
+		[Authorize(Roles = Constants.AdminRole)]
 		[HttpPost]
-        public async Task<IActionResult> Create(CreateUserVM model)
+		public async Task<IActionResult> Create(CreateUserVM model)
 		{
 
 			if (!ModelState.IsValid)
@@ -67,9 +74,22 @@ namespace VolunteerCenterMVCProject.Controllers
 			await service.CreateAsync(model);
 
 			return RedirectToAction("Index");
-        }
+		}
+
 
 		[HttpGet]
+		public async Task<IActionResult> Details(string id)
+		{
+			UserVM model = await service.GetUserAsync(id);
+
+			if (model == null)
+				return NotFound();
+
+
+			return View(model);
+		}
+		[HttpGet]
+
 		public async Task<IActionResult> Edit(string id)
 		{
 			var user = await service.EditAsync(id);
@@ -90,11 +110,13 @@ namespace VolunteerCenterMVCProject.Controllers
 			await service.UpdateAsync(model);
 
 			return RedirectToAction("Index");
-			
+
 		}
 
 
-        [HttpGet]
+		[HttpGet]
+		[Authorize(Roles = Constants.AdminRole)]
+
 		public async Task<IActionResult> Delete(string id)
 		{
 			await service.DeleteAsync(id);
