@@ -16,7 +16,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 
 //session config
-
 builder.Services.AddSession(options =>
 {
     options.Cookie.HttpOnly = true;
@@ -41,6 +40,7 @@ builder.Services.AddRazorPages();
 // Register services
 builder.Services.AddTransient<IUsersService, UsersService>();
 builder.Services.AddTransient<ICategoriesService, CategoriesService>();
+builder.Services.AddTransient<IStatusHistoryService, StatusHistoryService>();
 
 
 var app = builder.Build();

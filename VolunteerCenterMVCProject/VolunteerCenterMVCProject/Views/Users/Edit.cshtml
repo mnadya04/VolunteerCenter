@@ -1,36 +1,48 @@
-﻿@model VolunteerCenterMVCProject.ViewModels.Users.EditUserVM
-
+﻿@using VolunteerCenterMVCProject.Common
+@using VolunteerCenterMVCProject.Models
+@model VolunteerCenterMVCProject.ViewModels.Users.EditUserVM
+@inject UserManager<User> UserManager
+@{
+	var loggedUser = await UserManager.GetUserAsync(User);
+}
 
 <form action="/Users/Edit" method="post">
-    <div class="grid">
-        @Html.HiddenFor(m => m.Id)
-        <div class="row">
-            <div class="col-1">@Html.DisplayNameFor(m => m.FirstName)</div>
-            <div class="col-2">
-                @Html.TextBoxFor(m => m.FirstName)
-            </div>
-            <div>
-                @Html.ValidationMessageFor(m => m.FirstName)
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-1">@Html.DisplayNameFor(m => m.LastName)</div>
-            <div class="col-2">
-                @Html.TextBoxFor(m => m.LastName)
-            </div>
-            <div>
-                @Html.ValidationMessageFor(m => m.LastName)
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-3">
-                <input type="submit" value="Save" />
-                <a href ="/Users/Index">Back</a>
-            </div>
-        </div>
-    </div>
+	<div class="grid">
+		@Html.HiddenFor(m => m.Id)
+		<div class="row">
+			<div class="col-1">@Html.DisplayNameFor(m => m.FirstName)</div>
+			<div class="col-2">
+				@Html.TextBoxFor(m => m.FirstName)
+			</div>
+			<div>
+				@Html.ValidationMessageFor(m => m.FirstName)
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-1">@Html.DisplayNameFor(m => m.LastName)</div>
+			<div class="col-2">
+				@Html.TextBoxFor(m => m.LastName)
+			</div>
+			<div>
+				@Html.ValidationMessageFor(m => m.LastName)
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-3">
+				<input type="submit" value="Save" />
+				@if (await UserManager.IsInRoleAsync(loggedUser, Constants.VolunteerRole))
+				{
+					<a href="/Users/Details?id=@Model.Id">Back</a>
+				}
+				else
+				{
+					<a href="/Users/Index">Back</a>
+				}
+			</div>
+		</div>
+	</div>
 </form>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+	<partial name="_ValidationScriptsPartial" />
 }

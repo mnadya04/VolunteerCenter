@@ -44,7 +44,6 @@ namespace VolunteerCenterMVCProject.Areas.Identity.Pages.Account
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
-            _emailSender = emailSender;
         }
 
         /// <summary>
@@ -102,12 +101,10 @@ namespace VolunteerCenterMVCProject.Areas.Identity.Pages.Account
 
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
             [Display(Name = "First name")]
             public string FirstName { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 3)]
             [Display(Name = "Last name")]
             public string LastName { get; set; }
         }
@@ -145,7 +142,7 @@ namespace VolunteerCenterMVCProject.Areas.Identity.Pages.Account
 
                     _logger.LogInformation("User created a new account with password.");
 
-                    var userId = await _userManager.GetUserIdAsync(user);
+                   /* var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
@@ -165,7 +162,7 @@ namespace VolunteerCenterMVCProject.Areas.Identity.Pages.Account
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
-                    }
+                    }*/
                 }
 
                 foreach (var error in result.Errors)
@@ -174,9 +171,9 @@ namespace VolunteerCenterMVCProject.Areas.Identity.Pages.Account
                 }
             }
 
-            // If we got this far, something failed, redisplay form
-            return Page();
-        }
+			// If we got this far, something failed, redisplay form
+			return RedirectToPage("/Account/Login");
+		}
 
 
         private User CreateUser()

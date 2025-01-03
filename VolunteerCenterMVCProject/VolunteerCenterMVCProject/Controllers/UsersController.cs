@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
 using System.Linq.Expressions;
@@ -16,10 +17,12 @@ namespace VolunteerCenterMVCProject.Controllers
 	public class UsersController : Controller
 	{
 		private readonly IUsersService service;
+		private readonly UserManager<User> userManager;
 
-		public UsersController(IUsersService userService)
+		public UsersController(IUsersService service, UserManager<User> userManager)
 		{
-			this.service = userService;
+			this.service = service;
+			this.userManager = userManager;
 		}
 
 		[HttpGet]
@@ -85,7 +88,6 @@ namespace VolunteerCenterMVCProject.Controllers
 			if (model == null)
 				return NotFound();
 
-
 			return View(model);
 		}
 		[HttpGet]
@@ -108,6 +110,10 @@ namespace VolunteerCenterMVCProject.Controllers
 				return View(model);
 
 			await service.UpdateAsync(model);
+
+			var user = await userManager.FindByIdAsync(model.Id);
+			if (await userManager.IsInRoleAsync(user, Constants.VolunteerRole))
+				return RedirectToAction("Details", new { model.Id });
 
 			return RedirectToAction("Index");
 
