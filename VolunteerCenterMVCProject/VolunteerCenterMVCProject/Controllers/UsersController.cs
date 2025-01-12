@@ -68,7 +68,7 @@ namespace VolunteerCenterMVCProject.Controllers
 
 		[Authorize(Roles = Constants.AdminRole)]
 		[HttpPost]
-		public async Task<IActionResult> Create(CreateUserVM model)
+		public async Task<IActionResult> Create(CreateVM model)
 		{
 
 			if (!ModelState.IsValid)
@@ -94,7 +94,7 @@ namespace VolunteerCenterMVCProject.Controllers
 
 		public async Task<IActionResult> Edit(string id)
 		{
-			var user = await service.EditAsync(id);
+			var user = await service.GetUserAsync(id);
 
 			if (user == null)
 				return NotFound();

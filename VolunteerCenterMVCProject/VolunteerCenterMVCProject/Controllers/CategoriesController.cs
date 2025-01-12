@@ -38,8 +38,10 @@ namespace VolunteerCenterMVCProject.Controllers
             (String.IsNullOrEmpty(model.Name) || i.Name.Contains(model.Name)) &&
             (String.IsNullOrEmpty(model.Description) || i.Description.Contains(model.Description));
 
+			model.Pager.PagesCount =
+			  (int)Math.Ceiling(service.Count(filter) / (double)model.Pager.ItemsPerPage);
 
-            IndexVM result = await service.GetAllAsync(filter, model.Pager.Page, model.Pager.ItemsPerPage, model.Pager.PagesCount);
+			IndexVM result = await service.GetAllAsync(filter, model.Pager.Page, model.Pager.ItemsPerPage, model.Pager.PagesCount);
 
 
             model.Categories = result.Categories;
@@ -54,7 +56,7 @@ namespace VolunteerCenterMVCProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateCategoryVM model)
+        public async Task<IActionResult> Create(CreateVM model)
         {
             if (!ModelState.IsValid)
                 return View(model);
@@ -73,7 +75,7 @@ namespace VolunteerCenterMVCProject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(CategoryVM model)
+        public async Task<IActionResult> Edit(EditVM model)
         {
             if (!ModelState.IsValid)
                 return View(model);

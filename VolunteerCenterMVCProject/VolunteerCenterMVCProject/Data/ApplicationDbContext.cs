@@ -23,6 +23,7 @@ namespace VolunteerCenterMVCProject.Data
 		{
 			base.OnModelCreating(modelBuilder);
 
+		
 			#region Categories
 			modelBuilder.Entity<Category>()
 			.HasKey(x => x.CategoryId);

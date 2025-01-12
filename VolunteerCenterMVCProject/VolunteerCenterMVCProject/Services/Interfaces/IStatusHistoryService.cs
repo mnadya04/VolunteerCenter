@@ -5,9 +5,9 @@ namespace VolunteerCenterMVCProject.Services.Interfaces
 {
 	public interface IStatusHistoryService
 	{
-		//int Count
-		Task Create(StatusChangeVM model);
-		Task<IndexVM> GetAllChanges(Expression<Func<StatusChangeVM, bool>> filter, int page, int itemsPerPage, int count);
+		int Count();
+		Task Create(CreateVM model);
+		Task<IndexVM> GetAllChangesAsync(int page, int itemsPerPage, int count);
 
 	}
 }

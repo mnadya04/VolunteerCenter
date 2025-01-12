@@ -10,18 +10,23 @@ namespace VolunteerCenterMVCProject.Services
 {
 	public class StatusHistoryService : IStatusHistoryService
 	{
-		private ApplicationDbContext context;
+		private readonly ApplicationDbContext context;
 
 		public StatusHistoryService(ApplicationDbContext context)
 		{
 			this.context = context;
 		}
-		public async Task Create(StatusChangeVM model)
+
+		public int Count()
+		{
+			return context.statusHistories.Count();
+		}
+		public async Task Create(CreateVM model)
 		{
 			StatusHistory change = new StatusHistory()
 			{
 				ChangedBy = model.UserId,
-				EventId = model.EvntId,
+				EventId = model.EventId,
 				NewStatus = model.NewStatus,
 				ChangeDate = DateTime.Now,
 			};
@@ -30,21 +35,23 @@ namespace VolunteerCenterMVCProject.Services
 			await context.SaveChangesAsync();
 		}
 
-		public async Task<IndexVM> GetAllChanges(Expression<Func<StatusChangeVM, bool>> filter, int page, int itemsPerPage, int count)
+		public async Task<IndexVM> GetAllChangesAsync
+			(int page, int itemsPerPage, int count)
 		{
 			IndexVM model = new IndexVM();
 
-			IQueryable<StatusChangeVM> query = 
-				context.statusHistories.Select(x => new StatusChangeVM()
-			{
-				UserId = x.ChangedBy,
-				EvntId = x.EventId,
-				NewStatus = x.NewStatus,
-				ChangeDate = DateTime.Now,
-			});
-
-			if (filter != null)
-				query = query.Where(filter);
+			IQueryable<StatusChangeVM> query =
+				context.statusHistories
+				.Include(x => x.User)
+				.Include(x => x.Event)
+				.OrderByDescending(x => x.ChangeDate)
+				.Select(x => new StatusChangeVM()
+				{
+					Event = x.Event.Name,
+					Username = x.User.UserName,
+					NewStatus = x.NewStatus,
+					ChangeDate = x.ChangeDate,
+				});
 
 			model.Changes = await query
 					.Skip((page - 1) * itemsPerPage)

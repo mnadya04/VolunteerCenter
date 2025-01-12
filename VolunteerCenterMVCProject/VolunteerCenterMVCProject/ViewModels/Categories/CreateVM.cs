@@ -2,7 +2,7 @@
 
 namespace VolunteerCenterMVCProject.ViewModels.Categories
 {
-    public class CreateCategoryVM
+    public class CreateVM
     {
 
 

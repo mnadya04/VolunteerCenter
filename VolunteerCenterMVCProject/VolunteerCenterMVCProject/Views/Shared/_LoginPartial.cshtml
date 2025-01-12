@@ -4,15 +4,18 @@
 @inject UserManager<User> UserManager
 @{
 	var userId = UserManager.GetUserId(User);
+	var loggedUser = await UserManager.GetUserAsync(User);
 }
 
 <ul class="navbar-nav">
 	@if (SignInManager.IsSignedIn(User))
 	{
-		<li class="nav-item">
-			<a class="nav-link text-dark" href="/Users/Details?id=@userId">Your account</a>
-		</li>
-
+		@if (await UserManager.IsInRoleAsync(loggedUser, Constants.VolunteerRole))
+		{
+			<li class="nav-item">
+				<a class="nav-link text-dark" href="/Users/Details?id=@userId">Your account</a>
+			</li>
+		}
 		<li class="nav-item">
 			@* 	<form class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
 		asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
@@ -20,7 +23,7 @@
 		</form> *@
 			<form class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
 				  asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post">
-				
+
 				<button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
 			</form>
 

@@ -1,0 +1,45 @@
+﻿@model VolunteerCenterMVCProject.ViewModels.Locations.EditVM
+
+
+<form action="/Locations/Edit" method="post">
+    <div class="grid">
+        @Html.HiddenFor(m => m.Id)
+        <div class="row">
+            <div class="col-1">@Html.DisplayNameFor(m => m.Address)</div>
+            <div class="col-2">
+                @Html.TextBoxFor(m => m.Address)
+            </div>
+            <div>
+                @Html.ValidationMessageFor(m => m.Address)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-1">@Html.DisplayNameFor(m => m.City)</div>
+            <div class="col-2">
+                @Html.TextBoxFor(m => m.City)
+            </div>
+            <div>
+                @Html.ValidationMessageFor(m => m.City)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-1">@Html.DisplayNameFor(m => m.Country)</div>
+            <div class="col-2">
+                @Html.TextBoxFor(m => m.Country)
+            </div>
+            <div>
+                @Html.ValidationMessageFor(m => m.Country)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3">
+                <input type="submit" value="Save" />
+                <a href="/Locations/Index">Back</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -9,17 +9,15 @@ namespace VolunteerCenterMVCProject.Services
 {
     public class CategoriesService : ICategoriesService
     {
-        private ApplicationDbContext context;
-
-
+        private readonly ApplicationDbContext context;
         public CategoriesService(ApplicationDbContext context)
         {
             this.context = context;
         }
 
-        public int Count(Expression<Func<IndexVM, bool>> filter = null)
+        public int Count(Expression<Func<CategoryVM, bool>> filter = null)
         {
-            IQueryable<IndexVM> query = context.Categories.Select(x => new IndexVM()
+            IQueryable<CategoryVM> query = context.Categories.Select(x => new CategoryVM()
             {
                 Description = x.Description,
                 Name = x.Name,
@@ -32,7 +30,7 @@ namespace VolunteerCenterMVCProject.Services
             return query.Count();
         }
 
-        public async Task CreateAsync(CreateCategoryVM model)
+        public async Task CreateAsync(CreateVM model)
         {
             Category category = new Category()
             {
@@ -43,7 +41,7 @@ namespace VolunteerCenterMVCProject.Services
             await context.Categories.AddAsync(category);
             await context.SaveChangesAsync();
         }
-        public async Task UpdateAsync(CategoryVM model)
+        public async Task UpdateAsync(EditVM model)
         {
             Category category = await context.Categories.FindAsync(model.Id);
             

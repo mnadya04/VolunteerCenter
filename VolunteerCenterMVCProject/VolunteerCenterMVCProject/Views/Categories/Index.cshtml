@@ -7,16 +7,16 @@
 		<form action="/Categories/Index" method="get" class="d-flex w-100">
 			@foreach (var key in this.ViewContext.HttpContext.Request.Query.Keys)
 			{
-				if (key != "Email" && key != "FirstName" && key != "LastName" && key != "Pager.Page")
+				if (key != "Name" && key != "Description" && key != "Pager.Page")
 				{
 					<input type="hidden" name="@key" value="@this.ViewContext.HttpContext.Request.Query[key]" />
 				}
 			}
 			<div class="col-md-3 me-3">
-				@Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "First Name" })
+				@Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Name" })
 			</div>
 			<div class="col-md-3 me-3">
-				@Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = "Last Name" })
+				@Html.TextBoxFor(m => m.Description, new { @class = "form-control", placeholder = "Description" })
 			</div>
 			<div class="col-md-3 d-flex justify-content-end">
 				<a href="/Categories/Index" class="btn btn-secondary me-2">Clear</a>
@@ -31,8 +31,8 @@
 	<div class="container mt-4">
 		<a href="/Categories/Create">New</a>
 		<div class="row text-center border-bottom pb-2 mb-2">
-			<div class="col-3 font-weight-bold">@Html.DisplayFor(m => m.Name)</div>
-			<div class="col-3 font-weight-bold">@Html.DisplayFor(m => m.Description)</div>
+			<div class="col-3 font-weight-bold">@Html.DisplayNameFor(m => m.Name)</div>
+			<div class="col-3 font-weight-bold">@Html.DisplayNameFor(m => m.Description)</div>
 			<div class="col-3 font-weight-bold">Actions</div>
 		</div>
 

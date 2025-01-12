@@ -1,0 +1,44 @@
+﻿@model VolunteerCenterMVCProject.ViewModels.Locations.CreateVM
+
+
+<form action="/Locations/Create" method="post">
+	<div class="grid">
+		<div class="row">
+			<div class="col-1">@Html.DisplayNameFor(m => m.Address)</div>
+			<div class="col-2">
+				@Html.TextBoxFor(m => m.Address)
+			</div>
+			<div>
+				@Html.ValidationMessageFor(m => m.Address)
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-1">@Html.DisplayNameFor(m => m.City)</div>
+			<div class="col-2">
+				@Html.TextBoxFor(m => m.City)
+			</div>
+			<div>
+				@Html.ValidationMessageFor(m => m.City)
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-1">@Html.DisplayNameFor(m => m.Country)</div>
+			<div class="col-2">
+				@Html.TextBoxFor(m => m.Country)
+			</div>
+			<div>
+				@Html.ValidationMessageFor(m => m.Country)
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-3">
+				<input type="submit" value="Create" />
+			</div>
+		</div>
+	</div>
+</form>
+
+@section Scripts {
+	<partial name="_ValidationScriptsPartial" />
+}

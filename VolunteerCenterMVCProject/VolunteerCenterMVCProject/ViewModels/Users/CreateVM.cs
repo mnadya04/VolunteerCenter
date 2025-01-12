@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace VolunteerCenterMVCProject.ViewModels.Users
 {
-	public class CreateUserVM
+	public class CreateVM
 	{
 		[Required(ErrorMessage = "This filed is required")]
 		[Display(Name = "Email")]

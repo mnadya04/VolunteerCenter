@@ -23,7 +23,7 @@ builder.Services.AddSession(options =>
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+   // options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
     options.SlidingExpiration = true;
 });
 
@@ -41,7 +41,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddTransient<IUsersService, UsersService>();
 builder.Services.AddTransient<ICategoriesService, CategoriesService>();
 builder.Services.AddTransient<IStatusHistoryService, StatusHistoryService>();
-
+builder.Services.AddTransient<ILocationService, LocationService>();
 
 var app = builder.Build();
 

@@ -12,153 +12,125 @@ using VolunteerCenterMVCProject.ViewModels.Users;
 
 namespace VolunteerCenterMVCProject.Services
 {
-	public class UsersService : IUsersService
-	{
+    public class UsersService : IUsersService
+    {
 
-		private ApplicationDbContext context;
-		private UserManager<User> userManager;
-		private RoleManager<IdentityRole> roleManager;
+        private  ApplicationDbContext context;
+        private UserManager<User> userManager;
+        private RoleManager<IdentityRole> roleManager;
 
-		public UsersService(ApplicationDbContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
-		{
-			this.context = context;
-			this.userManager = userManager;
-			this.roleManager = roleManager;
-		}
-
-
-		public int Count(Expression<Func<UserVM, bool>> filter = null)
-		{
-			IQueryable<UserVM> query = this.context.Users.
-							Select(x => new UserVM()
-							{
-								Id = x.Id,
-								FirstName = x.FirstName,
-								LastName = x.LastName,
-								Email = x.Email
-							});
-
-			if (filter != null)
-				query = query.Where(filter);
-
-			return query.Count();
-		}
-		public async Task CreateAsync(CreateUserVM model)
-		{
-
-			User user = new User()
-			{
-				Email = model.Email,
-				NormalizedEmail = model.Email,
-				SecurityStamp = string.Empty,
-				UserName = model.Email,
-				FirstName = model.FirstName,
-				LastName = model.LastName,
-				NormalizedUserName = model.Email
-			};
+        public UsersService(ApplicationDbContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            this.context = context;
+            this.userManager = userManager;
+            this.roleManager = roleManager;
+        }
 
 
-			await this.userManager.CreateAsync(user, model.Password);
+        public int Count(Expression<Func<UserVM, bool>> filter = null)
+        {
+            IQueryable<UserVM> query = this.context.Users.
+                            Select(x => new UserVM()
+                            {
+                                Id = x.Id,
+                                FirstName = x.FirstName,
+                                LastName = x.LastName,
+                                Email = x.Email
+                            });
 
-			User item = await userManager.FindByNameAsync(user.Email);
+            if (filter != null)
+                query = query.Where(filter);
 
-			await userManager.AddToRoleAsync(user, Constants.VolunteerRole);
+            return query.Count();
+        }
+        public async Task CreateAsync(CreateVM model)
+        {
 
-			bool roleExist = await roleManager.RoleExistsAsync(Constants.VolunteerRole);
+            User user = new User()
+            {
+                Email = model.Email,
+                NormalizedEmail = model.Email,
+                SecurityStamp = string.Empty,
+                UserName = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                NormalizedUserName = model.Email
+            };
 
-			if (roleExist)
-			{
-				var result = await userManager.AddToRoleAsync(item, Constants.VolunteerRole);
+            await this.userManager.CreateAsync(user, model.Password);
 
-				if (!result.Succeeded)
-				{
-					throw new Exception(string.Join(Environment.NewLine, result.Errors.Select(e => e.Description)));
-				}
-			}
-		}
-		public async Task DeleteAsync(string id)
-		{
-			User item = await this.userManager.FindByIdAsync(id);
+            bool roleExist = await roleManager.RoleExistsAsync(Constants.VolunteerRole);
 
-			await userManager.DeleteAsync(item);
-		}
-		public async Task UpdateAsync(EditUserVM model)
-		{
-			User item = await context.Users.FindAsync(model.Id);
-
-			item.FirstName = model.FirstName;
-			item.LastName = model.LastName;
-
-			await context.SaveChangesAsync();
-
-		}
-
-		public async Task<UserVM> GetUserAsync(string id)
-		{
-			User item = await context.Users.FindAsync(id);
-
-			UserVM model = null;
-
-			if (item != null)
-			{
-				model = new UserVM()
-				{
-					FirstName = item.FirstName,
-					LastName = item.LastName,
-					Email = item.Email,
-					Id = item.Id
-				};
-			}
-
-			return model;
-
-		}
-		public async Task<EditUserVM> EditAsync(string id)
-		{
-			User item = await context.Users.FindAsync(id);
-			EditUserVM model = null;
-
-			if (item != null)
-			{
-				model = new EditUserVM()
-				{
-					Id = item.Id,
-					FirstName = item.FirstName,
-					LastName = item.LastName
-				};
-			}
-
-			return model;
-		}
+            if (roleExist)
+                await userManager.AddToRoleAsync(user, Constants.VolunteerRole);
 
 
-		public async Task<IndexVM> GetAllAsync(Expression<Func<UserVM, bool>> filter, int page, int itemsPerPage, int count)
-		{
+        }
+        public async Task DeleteAsync(string id)
+        {
+            User item = await this.userManager.FindByIdAsync(id);
 
-			IndexVM model = new IndexVM();
+            await userManager.DeleteAsync(item);
+        }
+        public async Task UpdateAsync(EditUserVM model)
+        {
+            User item = await context.Users.FindAsync(model.Id);
 
-			IQueryable<UserVM> query = this.context.Users.
-				Select(x => new UserVM()
-			{
-				Id = x.Id,
-				FirstName = x.FirstName,
-				LastName = x.LastName,
-				Email = x.Email
-			});
+            item.FirstName = model.FirstName;
+            item.LastName = model.LastName;
 
-			if (filter != null)
-				query = query.Where(filter);
+            await context.SaveChangesAsync();
+
+        }
+
+        public async Task<UserVM> GetUserAsync(string id)
+        {
+            User item = await context.Users.FindAsync(id);
+
+            UserVM model = null;
+
+            if (item != null)
+            {
+                model = new UserVM()
+                {
+                    FirstName = item.FirstName,
+                    LastName = item.LastName,
+                    Email = item.Email,
+                    Id = item.Id
+                };
+            }
+
+            return model;
+
+        }
+
+        public async Task<IndexVM> GetAllAsync(Expression<Func<UserVM, bool>> filter, int page, int itemsPerPage, int count)
+        {
+
+            IndexVM model = new IndexVM();
+
+            IQueryable<UserVM> query = this.context.Users.
+                Select(x => new UserVM()
+                {
+                    Id = x.Id,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    Email = x.Email
+                });
+
+            if (filter != null)
+                query = query.Where(filter);
 
 
-			model.Users = await query
-					.Skip((page - 1) * itemsPerPage)
-					.Take(itemsPerPage)
-					.ToListAsync();
+            model.Users = await query
+                    .Skip((page - 1) * itemsPerPage)
+                    .Take(itemsPerPage)
+                    .ToListAsync();
 
 
-			return model;
-		}
+            return model;
+        }
 
 
-	}
+    }
 }

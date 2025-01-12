@@ -9,7 +9,7 @@ using VolunteerCenterMVCProject.ViewModels.StatusHistory;
 
 namespace VolunteerCenterMVCProject.Controllers
 {
-	[Authorize(Roles =Constants.AdminRole)]
+	[Authorize(Roles = Constants.AdminRole)]
 	public class StatusHistoryController : Controller
 	{
 		private readonly IStatusHistoryService service;
@@ -19,7 +19,8 @@ namespace VolunteerCenterMVCProject.Controllers
 			this.service = service;
 		}
 
-		public IActionResult Index(IndexVM model)
+		[HttpGet]
+		public async Task<IActionResult> Index(IndexVM model)
 		{
 			model.Pager = new PagerVM();
 
@@ -27,11 +28,11 @@ namespace VolunteerCenterMVCProject.Controllers
 
 			model.Pager.ItemsPerPage = model.Pager.ItemsPerPage <= 0 ? 10 : model.Pager.ItemsPerPage;
 
-			
+			model.Pager.PagesCount = (int)Math.Ceiling(service.Count() / (double)model.Pager.ItemsPerPage);
 
+			IndexVM result = await service.GetAllChangesAsync(model.Pager.Page, model.Pager.ItemsPerPage, model.Pager.PagesCount);
 
-			//model.Pager.PagesCount = 
-
+			model.Changes = result.Changes;
 
 			return View(model);
 		}

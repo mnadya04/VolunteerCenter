@@ -58,6 +58,9 @@ namespace HousekeeperApp.Data.Seeding
                 }
             }
 
+            user = await userManager.FindByNameAsync(email);
+
+
             var role = await roleManager.FindByNameAsync(roleName);
             if (role == null)
             {
