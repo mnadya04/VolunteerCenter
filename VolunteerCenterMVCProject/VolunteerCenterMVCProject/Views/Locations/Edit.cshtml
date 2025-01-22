@@ -4,33 +4,39 @@
 <form action="/Locations/Edit" method="post">
     <div class="grid">
         @Html.HiddenFor(m => m.Id)
-        <div class="row">
-            <div class="col-1">@Html.DisplayNameFor(m => m.Address)</div>
-            <div class="col-2">
-                @Html.TextBoxFor(m => m.Address)
-            </div>
-            <div>
-                @Html.ValidationMessageFor(m => m.Address)
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-1">@Html.DisplayNameFor(m => m.City)</div>
-            <div class="col-2">
-                @Html.TextBoxFor(m => m.City)
-            </div>
-            <div>
-                @Html.ValidationMessageFor(m => m.City)
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-1">@Html.DisplayNameFor(m => m.Country)</div>
-            <div class="col-2">
-                @Html.TextBoxFor(m => m.Country)
-            </div>
-            <div>
-                @Html.ValidationMessageFor(m => m.Country)
-            </div>
-        </div>
+		<div class="row">
+			<div class="col-2">
+				<label class="form-label">@Html.DisplayNameFor(m => m.Address) </label>
+			</div>
+			<div class="col-6 mb-3">
+				@Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+			</div>
+			<div>
+				@Html.ValidationMessageFor(m => m.Address, null, new { @class = "text-danger" })
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-2">
+				<label class="form-label">@Html.DisplayNameFor(m => m.City) </label>
+			</div>
+			<div class="col-6 mb-3">
+				@Html.TextBoxFor(m => m.City, new { @class = "form-control" })
+			</div>
+			<div>
+				@Html.ValidationMessageFor(m => m.City, null, new { @class = "text-danger" })
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-2">
+				<label class="form-label">@Html.DisplayNameFor(m => m.Country) </label>
+			</div>
+			<div class="col-6 mb-3">
+				@Html.TextBoxFor(m => m.Country, new { @class = "form-control" })
+			</div>
+			<div>
+				@Html.ValidationMessageFor(m => m.Country, null, new { @class = "text-danger" })
+			</div>
+		</div>
         <div class="row">
             <div class="col-3">
                 <input type="submit" value="Save" />

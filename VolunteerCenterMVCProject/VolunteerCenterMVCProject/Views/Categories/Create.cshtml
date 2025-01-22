@@ -4,21 +4,25 @@
 <form action="/Categories/Create" method="post">
     <div class="grid">
         <div class="row">
-            <div class="col-1">@Html.DisplayNameFor(m => m.Name)</div>
             <div class="col-2">
-                @Html.TextBoxFor(m => m.Name)
+                <label class="form-label">@Html.DisplayNameFor(m => m.Name) </label>
+            </div>
+            <div class="col-6 mb-3">
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
             </div>
             <div>
-                @Html.ValidationMessageFor(m => m.Name)
+                @Html.ValidationMessageFor(m => m.Name, null, new { @class = "text-danger" })
             </div>
         </div>
         <div class="row">
-            <div class="col-1">@Html.DisplayNameFor(m => m.Description)</div>
             <div class="col-2">
-                @Html.TextBoxFor(m => m.Description)
+                <label class="form-label">@Html.DisplayNameFor(m => m.Description) </label>
+            </div>
+            <div class="col-6 mb-3">
+                @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
             </div>
             <div>
-                @Html.ValidationMessageFor(m => m.Description)
+                @Html.ValidationMessageFor(m => m.Description, null, new { @class = "text-danger" })
             </div>
         </div>
        

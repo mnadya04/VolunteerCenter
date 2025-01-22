@@ -2,60 +2,75 @@
 
 
 <form action="/Users/Create" method="post">
-    <div class="grid">
-        <div class="row">
-            <div class="col-1">@Html.DisplayNameFor(m => m.Email)</div>
-            <div class="col-2">
-                @Html.TextBoxFor(m => m.Email)
-            </div>
-            <div>
-                @Html.ValidationMessageFor(m => m.Email)
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-1">@Html.DisplayNameFor(m => m.Password)</div>
-            <div class="col-2">
-                @Html.PasswordFor(m => m.Password)
-            </div>
-            <div>
-                @Html.ValidationMessageFor(m => m.Password)
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-1">@Html.DisplayNameFor(m => m.ConfirmPassword)</div>
-            <div class="col-2">
-                @Html.PasswordFor(m => m.ConfirmPassword)
-            </div>
-            <div>
-                @Html.ValidationMessageFor(m => m.ConfirmPassword)
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-1">@Html.DisplayNameFor(m => m.FirstName)</div>
-            <div class="col-2">
-                @Html.TextBoxFor(m => m.FirstName)
-            </div>
-            <div>
-                @Html.ValidationMessageFor(m => m.FirstName)
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-1">@Html.DisplayNameFor(m => m.LastName)</div>
-            <div class="col-2">
-                @Html.TextBoxFor(m => m.LastName)
-            </div>
-            <div>
-                @Html.ValidationMessageFor(m => m.LastName)
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-3">
-                <input type="submit" value="Create"/>
-            </div>
-        </div>
-    </div>
+	<div class="grid">
+		<div class="row">
+			<div class="col-2">
+				<label class="form-label">@Html.DisplayNameFor(m => m.Email) </label>
+			</div>
+			<div class="col-6 mb-3">
+				@Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+			</div>
+			<div>
+				@Html.ValidationMessageFor(m => m.Email, null, new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-2">
+				<label class="form-label">@Html.DisplayNameFor(m => m.Password) </label>
+			</div>
+			<div class="col-6 mb-3">
+				@Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+			</div>
+			<div>
+				@Html.ValidationMessageFor(m => m.Password, null, new { @class = "text-danger" })
+			</div>
+		</div>
+
+
+		<div class="row">
+			<div class="col-2">
+				<label class="form-label">@Html.DisplayNameFor(m => m.ConfirmPassword) </label>
+			</div>
+			<div class="col-6 mb-3">
+				@Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+			</div>
+			<div>
+				@Html.ValidationMessageFor(m => m.ConfirmPassword, null, new { @class = "text-danger" })
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-2">
+				<label class="form-label">@Html.DisplayNameFor(m => m.FirstName) </label>
+			</div>
+			<div class="col-6 mb-3">
+				@Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+			</div>
+			<div>
+				@Html.ValidationMessageFor(m => m.FirstName, null, new { @class = "text-danger" })
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-2">
+				<label class="form-label">@Html.DisplayNameFor(m => m.LastName) </label>
+			</div>
+			<div class="col-6 mb-3">
+				@Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+			</div>
+			<div>
+				@Html.ValidationMessageFor(m => m.LastName, null, new { @class = "text-danger" })
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-3">
+				<input type="submit" value="Create" />
+				<a href="/Users/Index">Back</a>
+
+			</div>
+		</div>
+	</div>
 </form>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+	<partial name="_ValidationScriptsPartial" />
 }

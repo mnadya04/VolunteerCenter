@@ -10,21 +10,25 @@
 	<div class="grid">
 		@Html.HiddenFor(m => m.Id)
 		<div class="row">
-			<div class="col-1">@Html.DisplayNameFor(m => m.FirstName)</div>
-			<div class="col-2">
-				@Html.TextBoxFor(m => m.FirstName)
+			<div class="col-1">
+				<label class="form-label">@Html.DisplayNameFor(m => m.FirstName) </label>
+			</div>
+			<div class="col-6 mb-3">
+				@Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
 			</div>
 			<div>
-				@Html.ValidationMessageFor(m => m.FirstName)
+				@Html.ValidationMessageFor(m => m.FirstName, null, new { @class = "text-danger" })
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-1">@Html.DisplayNameFor(m => m.LastName)</div>
-			<div class="col-2">
-				@Html.TextBoxFor(m => m.LastName)
+			<div class="col-1">
+				<label class="form-label">@Html.DisplayNameFor(m => m.LastName) </label>
+			</div>
+			<div class="col-6">
+				@Html.TextBoxFor(m => m.LastName, new { @class = "form-control"})
 			</div>
 			<div>
-				@Html.ValidationMessageFor(m => m.LastName)
+				@Html.ValidationMessageFor(m => m.LastName,null, new {@class = "text-danger"})
 			</div>
 		</div>
 		<div class="row">

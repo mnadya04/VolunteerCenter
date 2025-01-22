@@ -7,6 +7,7 @@ namespace VolunteerCenterMVCProject.ViewModels.Users
 	{
 		[Required(ErrorMessage = "This filed is required")]
 		[Display(Name = "Email")]
+		[EmailAddress]
 		public string Email { get; set; }
 
 		[Required(ErrorMessage = "This filed is required")]

@@ -1,8 +1,6 @@
 ﻿namespace VolunteerCenterMVCProject.ViewModels.Categories
 {
-    public class CategoryVM : CreateVM
+    public class CategoryVM : EditVM
     {
-
-        public string Id { get; set; }
     }
 }

@@ -10,7 +10,7 @@
 <ul class="navbar-nav">
 	@if (SignInManager.IsSignedIn(User))
 	{
-		@if (await UserManager.IsInRoleAsync(loggedUser, Constants.VolunteerRole))
+		@if (loggedUser != null && await UserManager.IsInRoleAsync(loggedUser, Constants.VolunteerRole))
 		{
 			<li class="nav-item">
 				<a class="nav-link text-dark" href="/Users/Details?id=@userId">Your account</a>
