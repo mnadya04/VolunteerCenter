@@ -15,15 +15,13 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 
-//session config
-builder.Services.AddSession(options =>
-{
-    options.Cookie.HttpOnly = true;
-});
+builder.Services.AddSession();
+
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-   // options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+    options.Cookie.HttpOnly = true;
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(10);
     options.SlidingExpiration = true;
 });
 

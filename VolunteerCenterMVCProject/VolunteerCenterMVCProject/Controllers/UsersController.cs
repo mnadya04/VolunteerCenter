@@ -17,12 +17,10 @@ namespace VolunteerCenterMVCProject.Controllers
 	public class UsersController : Controller
 	{
 		private readonly IUsersService service;
-		private readonly UserManager<User> userManager;
 
-		public UsersController(IUsersService service, UserManager<User> userManager)
+		public UsersController(IUsersService service)
 		{
 			this.service = service;
-			this.userManager = userManager;
 		}
 
 		[HttpGet]
@@ -111,9 +109,11 @@ namespace VolunteerCenterMVCProject.Controllers
 
 			await service.UpdateAsync(model);
 
-			var user = await userManager.FindByIdAsync(model.Id);
-			if (await userManager.IsInRoleAsync(user, Constants.VolunteerRole))
-				return RedirectToAction("Details", new { model.Id });
+			var loggedUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+			if (await service.IsInRoleAsync(loggedUserId, Constants.VolunteerRole))
+				return RedirectToAction("Details", new { Id = loggedUserId });
+
 
 			return RedirectToAction("Index");
 

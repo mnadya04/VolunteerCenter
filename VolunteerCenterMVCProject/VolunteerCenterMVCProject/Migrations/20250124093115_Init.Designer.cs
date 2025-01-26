@@ -12,7 +12,7 @@ using VolunteerCenterMVCProject.Data;
 namespace VolunteerCenterMVCProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250122192050_Init")]
+    [Migration("20250124093115_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

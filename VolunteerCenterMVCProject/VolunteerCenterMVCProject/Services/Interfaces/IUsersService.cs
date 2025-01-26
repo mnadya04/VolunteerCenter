@@ -8,7 +8,7 @@ namespace VolunteerCenterMVCProject.Services.Interfaces
 	public interface IUsersService
 	{
 		int Count(Expression<Func<UserVM, bool>> filter = null);
-
+		Task<bool> IsInRoleAsync(string id, string role);
 		Task CreateAsync(CreateVM model);
 		Task DeleteAsync(string id);
 		Task UpdateAsync(EditUserVM model);

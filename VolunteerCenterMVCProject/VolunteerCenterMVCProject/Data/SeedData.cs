@@ -6,6 +6,7 @@ using VolunteerCenterMVCProject.Models;
 
 namespace HousekeeperApp.Data.Seeding
 {
+    
     public class SeedData
     {
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
