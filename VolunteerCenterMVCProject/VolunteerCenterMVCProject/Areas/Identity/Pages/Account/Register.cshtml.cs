@@ -27,23 +27,16 @@ namespace VolunteerCenterMVCProject.Areas.Identity.Pages.Account
 	{
 		private readonly SignInManager<User> _signInManager;
 		private readonly UserManager<User> _userManager;
-		private readonly IUserStore<User> _userStore;
-		private readonly IUserEmailStore<User> _emailStore;
-		// private readonly ILogger<RegisterModel> _logger;
-		private readonly IEmailSender _emailSender;
+		private readonly ILogger<RegisterModel> _logger;
 
 		public RegisterModel(
 			UserManager<User> userManager,
-			IUserStore<User> userStore,
 			SignInManager<User> signInManager,
-			ILogger<RegisterModel> logger,
-			IEmailSender emailSender)
+			ILogger<RegisterModel> logger)
 		{
 			_userManager = userManager;
-			_userStore = userStore;
-			_emailStore = GetEmailStore();
 			_signInManager = signInManager;
-			// _logger = logger;
+			_logger = logger;
 		}
 
 		/// <summary>
@@ -128,9 +121,7 @@ namespace VolunteerCenterMVCProject.Areas.Identity.Pages.Account
 					FirstName = Input.FirstName,
 					LastName = Input.LastName
 				};
-				/* await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
- */
+
 
 				var result = await _userManager.CreateAsync(user, Input.Password);
 
@@ -139,9 +130,6 @@ namespace VolunteerCenterMVCProject.Areas.Identity.Pages.Account
 
 					await _userManager.AddToRoleAsync(user, Constants.VolunteerRole);
 
-					// _logger.LogInformation("User created a new account with password.");
-
-					await _signInManager.SignInAsync(user, isPersistent: false);
 					return RedirectToPage("/Account/Login");
 				}
 
@@ -152,36 +140,6 @@ namespace VolunteerCenterMVCProject.Areas.Identity.Pages.Account
 			}
 
 			return Page();
-		}
-
-		/*	private User CreateUser()
-			{
-				try
-				{
-					var user = Activator.CreateInstance<User>();
-
-					// Set FirstName and LastName properties based on the input model
-					user.FirstName = Input.FirstName;
-					user.LastName = Input.LastName;
-
-					return user;
-				}
-				catch
-				{
-					throw new InvalidOperationException($"Can't create an instance of '{nameof(User)}'. " +
-						$"Ensure that '{nameof(User)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-						$"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
-				}
-			}*/
-
-
-		private IUserEmailStore<User> GetEmailStore()
-		{
-			if (!_userManager.SupportsUserEmail)
-			{
-				throw new NotSupportedException("The default UI requires a user store with email support.");
-			}
-			return (IUserEmailStore<User>)_userStore;
 		}
 	}
 }
