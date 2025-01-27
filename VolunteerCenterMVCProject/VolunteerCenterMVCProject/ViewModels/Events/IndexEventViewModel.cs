@@ -15,6 +15,8 @@ namespace VolunteerCenterMVCProject.ViewModels.Events
         public double Budget { get; set; }
         public string Status { get; set; }
         public string CreatedBy { get; set; }
-    }
+        public bool IsUserSignedUp { get; set; }
+
+	}
 }
 

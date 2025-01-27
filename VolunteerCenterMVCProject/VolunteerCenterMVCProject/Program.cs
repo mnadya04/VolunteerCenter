@@ -21,7 +21,7 @@ builder.Services.AddSession();
 builder.Services.ConfigureApplicationCookie(options =>
 {   
     options.Cookie.HttpOnly = true;
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
+    //options.ExpireTimeSpan = TimeSpan.FromMinutes(1);
     options.SlidingExpiration = false;
 });
 
@@ -43,6 +43,8 @@ IServiceCollection serviceCollection = builder.Services.AddTransient<ICategories
 IServiceCollection serviceCollection2 = builder.Services.AddTransient<IEventsService, EventsService>();
 builder.Services.AddTransient<IStatusHistoryService, StatusHistoryService>();
 builder.Services.AddTransient<ILocationService, LocationService>();
+builder.Services.AddScoped<ISignUpsService, SignUpsService>();
+
 
 var app = builder.Build();
 
