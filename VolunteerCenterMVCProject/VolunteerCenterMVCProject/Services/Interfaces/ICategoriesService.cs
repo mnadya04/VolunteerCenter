@@ -14,7 +14,5 @@ namespace VolunteerCenterMVCProject.Services.Interfaces
         Task UpdateAsync(EditVM model);
         Task<IndexVM> GetAllAsync(Expression<Func<CategoryVM, bool>> filter, int page, int itemsPerPage, int count);
         Task<IndexCategoryEventsViewModel> GetCategoryWithEventsAsync(string categoryId);
-        Task AddEventToCategoryAsync(string categoryId, string eventId);
-        Task RemoveEventFromCategoryAsync(string categoryId, string eventId);
     }
 }

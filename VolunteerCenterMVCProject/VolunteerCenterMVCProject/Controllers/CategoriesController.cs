@@ -95,34 +95,24 @@ namespace VolunteerCenterMVCProject.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ManageEvents(string id)
+        // GET: Categories/Events
+        public async Task<IActionResult> Events(string categoryId)
         {
-            // Fetch the category and the associated events
-            var model = await this.service.GetCategoryWithEventsAsync(id);
-
-            // Ensure the model is being passed correctly to the view
-            return View(model);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> ManageEvents(IndexCategoryEventsViewModel model, string addEvent, string removeEvent)
-        {
-            if (!string.IsNullOrEmpty(addEvent))
+            if (string.IsNullOrEmpty(categoryId))
             {
-                // Add the event to the category
-                await this.service.AddEventToCategoryAsync(model.CategoryId, addEvent);
+                return NotFound();
             }
 
-            if (!string.IsNullOrEmpty(removeEvent))
+            var categoryWithEvents = await this.service.GetCategoryWithEventsAsync(categoryId);
+
+            if (categoryWithEvents == null)
             {
-                // Remove the event from the category
-                await this.service.RemoveEventFromCategoryAsync(model.CategoryId, removeEvent);
+                return NotFound();
             }
 
-            // Redirect back to the same page with the updated category data
-            return RedirectToAction(nameof(ManageEvents), new { id = model.CategoryId });
+            return View(categoryWithEvents);
         }
+
 
     }
 }

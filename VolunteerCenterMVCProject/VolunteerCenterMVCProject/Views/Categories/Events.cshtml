@@ -1,0 +1,27 @@
+﻿@model VolunteerCenterMVCProject.ViewModels.Categories.IndexCategoryEventsViewModel
+
+<div class="container mt-4">
+    <h2>Events in @Model.CategoryName Category</h2>
+    <p>@Model.CategoryName</p>
+
+    <div class="row">
+        <div class="col-12">
+            @if (Model.Events != null && Model.Events.Any())
+            {
+                <ul class="list-group">
+                    @foreach (var eventItem in Model.Events)
+                    {
+                        <li class="list-group-item">
+                            @eventItem.Name
+                            <a href="/Events/Details/@eventItem.Id" class="btn btn-info btn-sm float-end">Details</a>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No events available for this category.</p>
+            }
+        </div>
+    </div>
+</div>
