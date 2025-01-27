@@ -12,8 +12,8 @@ using VolunteerCenterMVCProject.Data;
 namespace VolunteerCenterMVCProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250124093115_Init")]
-    partial class Init
+    [Migration("20250127221717_NV")]
+    partial class NV
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -167,16 +167,22 @@ namespace VolunteerCenterMVCProject.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = "1",
+                            Description = "Need to be set",
+                            Name = "Category not set yet"
+                        });
                 });
 
             modelBuilder.Entity("VolunteerCenterMVCProject.Models.Event", b =>
@@ -188,30 +194,24 @@ namespace VolunteerCenterMVCProject.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("CategoryId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CreatedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("Deadline")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LocationId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("EventId");
@@ -231,20 +231,26 @@ namespace VolunteerCenterMVCProject.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("City")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Country")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("LocationId");
 
                     b.ToTable("Locations");
+
+                    b.HasData(
+                        new
+                        {
+                            LocationId = "1",
+                            Address = "Location not set yet",
+                            City = "Location not set yet",
+                            Country = "Location not set yet"
+                        });
                 });
 
             modelBuilder.Entity("VolunteerCenterMVCProject.Models.StatusHistory", b =>
@@ -256,15 +262,12 @@ namespace VolunteerCenterMVCProject.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ChangedBy")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("EventId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("NewStatus")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("StatusHistoryId");
@@ -296,11 +299,9 @@ namespace VolunteerCenterMVCProject.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -355,18 +356,12 @@ namespace VolunteerCenterMVCProject.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("EventId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("SignupDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("VolunteerId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("SignupId");
@@ -433,21 +428,15 @@ namespace VolunteerCenterMVCProject.Migrations
                 {
                     b.HasOne("VolunteerCenterMVCProject.Models.Category", "Category")
                         .WithMany("Events")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.HasOne("VolunteerCenterMVCProject.Models.User", "User")
                         .WithMany("Events")
-                        .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("CreatedBy");
 
                     b.HasOne("VolunteerCenterMVCProject.Models.Location", "Location")
                         .WithMany("Events")
-                        .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("LocationId");
 
                     b.Navigation("Category");
 
@@ -460,15 +449,11 @@ namespace VolunteerCenterMVCProject.Migrations
                 {
                     b.HasOne("VolunteerCenterMVCProject.Models.User", "User")
                         .WithMany("StatusHistories")
-                        .HasForeignKey("ChangedBy")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("ChangedBy");
 
                     b.HasOne("VolunteerCenterMVCProject.Models.Event", "Event")
                         .WithMany("StatusHistories")
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("EventId");
 
                     b.Navigation("Event");
 
@@ -479,15 +464,11 @@ namespace VolunteerCenterMVCProject.Migrations
                 {
                     b.HasOne("VolunteerCenterMVCProject.Models.Event", "Event")
                         .WithMany("VolunteerSignups")
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("EventId");
 
                     b.HasOne("VolunteerCenterMVCProject.Models.User", "User")
                         .WithMany("VolunteerSignups")
-                        .HasForeignKey("VolunteerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("VolunteerId");
 
                     b.Navigation("Event");
 

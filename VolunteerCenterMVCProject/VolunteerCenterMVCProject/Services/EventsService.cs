@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using System.Net.NetworkInformation;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,6 +11,7 @@ using VolunteerCenterMVCProject.Services.Interfaces;
 using VolunteerCenterMVCProject.ViewModels.Categories;
 using VolunteerCenterMVCProject.ViewModels.Events;
 using VolunteerCenterMVCProject.ViewModels.Shared;
+using VolunteerCenterMVCProject.ViewModels.Users;
 using Location = VolunteerCenterMVCProject.Models.Location;
 
 namespace VolunteerCenterMVCProject.Services
@@ -204,45 +206,46 @@ namespace VolunteerCenterMVCProject.Services
         }
 
 
-        public async Task<IndexEventsViewModel> GetEventsAsync(IndexEventsViewModel model)
-        {
-            // Set default values for paging if not provided
-            model.Pager ??= new PagerVM { Page = 1, ItemsPerPage = 10 };
+		public async Task<IndexEventsViewModel> GetEventsAsync(IndexEventsViewModel model,
+	   Expression<Func<IndexEventViewModel, bool>> filter = null)
+		{
+			model.Pager ??= new PagerVM { Page = 1, ItemsPerPage = 10 };
 
-            // Calculate the total count of events
-            int totalEvents = await this.context.Events.CountAsync();
+			var query = this.context.Events
+				.Include(e => e.Location)
+				.Include(e => e.Category)
+				.Include(e => e.User)
+				.OrderBy(e => e.Name)
+				.Select(e => new IndexEventViewModel
+				{
+					Id = e.EventId,
+					Name = e.Name,
+					Location = e.Location.City,
+					Category = e.Category.Name,
+					Deadline = e.Deadline,
+					Budget = e.Budget,
+					Status = e.Status,
+					CreatedBy = $"{e.User.FirstName} {e.User.LastName}"
+				});
 
-            // Calculate the total pages
-            model.Pager.PagesCount = (int)Math.Ceiling(totalEvents / (double)model.Pager.ItemsPerPage);
+			if (filter != null)
+			{
+				query = query.Where(filter);
+			}
 
-            // Get the events for the current page
-            List<Event> events = await this.context.Events
-                .Include(e => e.Location)
-                .Include(e => e.Category)
-                .Include(e => e.User)
-                .OrderBy(e => e.Name)
-                .Skip((model.Pager.Page - 1) * model.Pager.ItemsPerPage)
-                .Take(model.Pager.ItemsPerPage)
-                .ToListAsync();
+			int totalEvents = await query.CountAsync();
 
-            // Map events to the view model
-            model.Events = events.Select(e => new IndexEventViewModel
-            {
-                Id = e.EventId,
-                Name = e.Name,
-                Location = e.Location.City,
-                Category = e.Category.Name,
-                Deadline = e.Deadline,
-                Budget = e.Budget,
-                Status = e.Status,
-                CreatedBy = $"{e.User.FirstName} {e.User.LastName}"
-            }).ToList();
+			model.Pager.PagesCount = (int)Math.Ceiling(totalEvents / (double)model.Pager.ItemsPerPage);
 
-            return model;
-        }
+			model.Events = await query
+				.Skip((model.Pager.Page - 1) * model.Pager.ItemsPerPage)
+				.Take(model.Pager.ItemsPerPage)
+				.ToListAsync();
 
+			return model;
+		}
 
-        public async Task<EditEventViewModel> GetEventToEditAsync(string id)
+		public async Task<EditEventViewModel> GetEventToEditAsync(string id)
         {
             Event? eventToEdit = await this.context.Events
                 .Include(e => e.Location)

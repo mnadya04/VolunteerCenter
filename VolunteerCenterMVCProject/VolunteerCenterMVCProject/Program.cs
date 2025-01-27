@@ -37,10 +37,10 @@ builder.Services.AddRazorPages();
 
 // Register services
 builder.Services.AddTransient<IUsersService, UsersService>();
-//builder.Services.AddTransient<ICategoriesService, CategoriesService>();
-//builder.Services.AddTransient<IEventsService, EventsService>();
-IServiceCollection serviceCollection = builder.Services.AddTransient<ICategoriesService, CategoriesService>();
-IServiceCollection serviceCollection2 = builder.Services.AddTransient<IEventsService, EventsService>();
+builder.Services.AddTransient<ICategoriesService, CategoriesService>();
+builder.Services.AddTransient<IEventsService, EventsService>();
+//IServiceCollection serviceCollection = builder.Services.AddTransient<ICategoriesService, CategoriesService>();
+//IServiceCollection serviceCollection2 = builder.Services.AddTransient<IEventsService, EventsService>();
 builder.Services.AddTransient<IStatusHistoryService, StatusHistoryService>();
 builder.Services.AddTransient<ILocationService, LocationService>();
 builder.Services.AddScoped<ISignUpsService, SignUpsService>();

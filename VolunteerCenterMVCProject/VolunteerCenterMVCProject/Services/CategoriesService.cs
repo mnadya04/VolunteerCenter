@@ -60,9 +60,14 @@ namespace VolunteerCenterMVCProject.Services
         {
             Category category = await context.Categories.FindAsync(id);
 
-            //delete connected event
+			var eventsToUpdate = context.Events.Where(e => e.CategoryId == id);
+			foreach (var ev in eventsToUpdate)
+			{
+				ev.CategoryId = "1";
+			}
+			await context.SaveChangesAsync();
 
-            context.Categories.Remove(category);
+			context.Categories.Remove(category);
             await context.SaveChangesAsync();
         }
         public async Task<CategoryVM> GetCategoryAsync(string id)
@@ -84,7 +89,9 @@ namespace VolunteerCenterMVCProject.Services
 
             IndexVM model = new IndexVM();
 
-            IQueryable<CategoryVM> query = context.Categories.Select(x => new CategoryVM()
+            IQueryable<CategoryVM> query = context.Categories
+                .Where(x => x.CategoryId != "1")
+				.Select(x => new CategoryVM()
             {
                 Description = x.Description,
                 Name = x.Name,
@@ -123,12 +130,7 @@ namespace VolunteerCenterMVCProject.Services
             };
         }
 
-
-
-
-
-
-
-    }
+	
+	}
 }
 

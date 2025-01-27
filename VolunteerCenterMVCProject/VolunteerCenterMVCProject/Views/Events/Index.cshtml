@@ -6,12 +6,39 @@
 }
 
 <h1>Index</h1>
+
 @if (User.IsInRole(Constants.AdminRole))
 {
     <p id="my-p">
         <a asp-action="Create" class="btn" style="background-color:turquoise">Create New</a>
     </p>
 }
+
+<div class="row align-items-center g-3 mb-3">
+    <form action="/Events/Index" method="get" class="d-flex w-100">
+        @foreach (var key in this.ViewContext.HttpContext.Request.Query.Keys)
+        {
+            if (key != "Name" && key != "Location" && key != "Category" && key != "Pager.Page")
+            {
+                <input type="hidden" name="@key" value="@this.ViewContext.HttpContext.Request.Query[key]" />
+            }
+        }
+
+        <div class="col-md-3 me-3">
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Name" })
+        </div>
+        <div class="col-md-3 me-3">
+            @Html.TextBoxFor(m => m.Location, new { @class = "form-control", placeholder = "Location" })
+        </div>
+        <div class="col-md-3 me-3">
+            @Html.TextBoxFor(m => m.Category, new { @class = "form-control", placeholder = "Category" })
+        </div>
+        <div class="col-md-3 d-flex justify-content-end">
+            <a href="/Events/Index" class="btn btn-secondary me-2">Clear</a>
+            <input type="submit" value="Filter" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
 
 <table class="table">
     <thead>
@@ -74,5 +101,4 @@
             </tr>
         }
     </tbody>
-
 </table>

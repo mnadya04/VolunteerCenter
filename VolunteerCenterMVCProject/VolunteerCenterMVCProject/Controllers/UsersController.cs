@@ -50,7 +50,6 @@ namespace VolunteerCenterMVCProject.Controllers
 
 			IndexVM result = await service.GetAllAsync(filter, model.Pager.Page, model.Pager.ItemsPerPage, model.Pager.PagesCount);
 
-
 			model.Users = result.Users;
 
 			return View(model);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using VolunteerCenterMVCProject.Models;
 using VolunteerCenterMVCProject.ViewModels.Events;
@@ -11,7 +12,7 @@ namespace VolunteerCenterMVCProject.Services.Interfaces
 
         Task DeleteEventAsync(string id);
 
-        Task<IndexEventsViewModel> GetEventsAsync(IndexEventsViewModel model);
+        Task<IndexEventsViewModel> GetEventsAsync(IndexEventsViewModel model, Expression<Func<IndexEventViewModel, bool>> filter = null);
 
         Task<DetailsEventViewModel> GetEventDetails(string id);
 

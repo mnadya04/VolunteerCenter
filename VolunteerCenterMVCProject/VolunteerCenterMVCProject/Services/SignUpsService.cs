@@ -27,7 +27,6 @@ namespace VolunteerCenterMVCProject.Services
 				EventId = eventId,
 				VolunteerId = userId,
 				SignupDate = DateTime.Now,
-				Status = "sms"
 			};
 
 			_context.Signups.Add(signup);

@@ -23,15 +23,31 @@ namespace VolunteerCenterMVCProject.Data
 		{
 			base.OnModelCreating(modelBuilder);
 
-		
+
 			#region Categories
 			modelBuilder.Entity<Category>()
 			.HasKey(x => x.CategoryId);
+
+			modelBuilder.Entity<Category>()
+				.HasData(new Category()
+				{
+					CategoryId = "1",
+					Name = "Category not set yet",
+					Description = "Need to be set"
+				});
 			#endregion
 
 			#region Locations
 			modelBuilder.Entity<Location>()
 				.HasKey(c => c.LocationId);
+			modelBuilder.Entity<Location>()
+				.HasData(new Location()
+				{
+					LocationId = "1",
+					City = "Location not set yet",
+					Address = "Location not set yet",
+					Country = "Location not set yet"
+				});
 			#endregion
 
 			#region VolunteerSingups
@@ -80,6 +96,7 @@ namespace VolunteerCenterMVCProject.Data
 				.HasOne(x => x.Location)
 				.WithMany(x => x.Events)
 				.HasForeignKey(x => x.LocationId);
+
 
 
 			modelBuilder.Entity<Event>()

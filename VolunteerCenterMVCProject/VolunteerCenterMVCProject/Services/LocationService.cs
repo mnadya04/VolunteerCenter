@@ -48,6 +48,14 @@ namespace VolunteerCenterMVCProject.Services
 		{
 			Location location = await context.Locations.FindAsync(id);
 
+			var eventsToUpdate = context.Events.Where(e => e.LocationId == id);
+			foreach (var ev in eventsToUpdate)
+			{
+				ev.LocationId = "1";
+			}
+			await context.SaveChangesAsync();
+
+
 			context.Locations.Remove(location);
 			await context.SaveChangesAsync();
 		}
@@ -70,6 +78,7 @@ namespace VolunteerCenterMVCProject.Services
 		{
 			IndexVM model = new IndexVM();
 			model.Locations = await context.Locations
+				.Where(x => x.LocationId != "1")
 				.Select(x => new LocationVM
 				{
 					Id = x.LocationId,
