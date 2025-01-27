@@ -15,7 +15,7 @@ namespace VolunteerCenterMVCProject.ViewModels.Events
 
         public string CategoryId { get; set; }
 
-        public string CreatedBy { get; set; }
+        public string ChangedBy { get; set; }
 
         public string LocationCity { get; set; }
 

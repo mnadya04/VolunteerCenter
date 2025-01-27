@@ -31,7 +31,7 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
+                <label asp-for="Status" class="control-label">Status</label>
                 <select asp-for="Status" class="form-control" asp-items="Model.StatusOptions"></select>
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
@@ -54,7 +54,6 @@
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
 
-
             <input type="submit" value="Save" class="btn btn-primary" />
         </form>
     </div>
@@ -65,5 +64,7 @@
 </div>
 
 @section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

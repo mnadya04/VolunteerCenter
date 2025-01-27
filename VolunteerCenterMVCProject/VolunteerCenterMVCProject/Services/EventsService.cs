@@ -54,29 +54,54 @@ namespace VolunteerCenterMVCProject.Services
             await context.SaveChangesAsync();
         }
 
-
         public async Task EditEventByAdminAsync(EditEventViewModel model)
         {
+            // Find the event by its ID
             Event? eventToEdit = await this.context.Events.FirstOrDefaultAsync(e => e.EventId == model.Id);
             if (eventToEdit == null) throw new KeyNotFoundException("Event not found.");
 
+            // Find the related location and category by their IDs
             Location? location = await this.context.Locations.FirstOrDefaultAsync(l => l.LocationId == model.LocationId);
             Category? category = await this.context.Categories.FirstOrDefaultAsync(c => c.CategoryId == model.CategoryId);
-            
+
             if (location == null) throw new Exception("Invalid Location.");
             if (category == null) throw new Exception("Invalid Category.");
 
-
+            // Update the event's basic properties
             eventToEdit.Name = model.Name;
             eventToEdit.Description = model.Description;
             eventToEdit.Deadline = model.Deadline;
             eventToEdit.Budget = model.Budget;
-            eventToEdit.Status = model.Status;
             eventToEdit.LocationId = location.LocationId;
             eventToEdit.CategoryId = category.CategoryId;
 
+            // Check if the status has changed
+            if (eventToEdit.Status != model.Status)
+            {
+                // Get the current user's ID (assuming it is passed in the view model or accessible here)
+                string userId = model.ChangedBy;
+                ;  // Ensure you pass the user ID to the method (can be obtained from the controller)
+
+                // Log the status change to the StatusHistory table
+                var statusHistory = new StatusHistory
+                {
+                    EventId = model.Id,
+                    ChangedBy = userId,      // Set the ID of the user making the change
+                    NewStatus = model.Status,
+                    ChangeDate = DateTime.Now
+                };
+
+                // Add the status history entry to the context
+                await context.statusHistories.AddAsync(statusHistory);
+
+                // Finally, update the event's status
+                eventToEdit.Status = model.Status;  // Update the status
+            }
+
+            // Save changes to the database
             await context.SaveChangesAsync();
         }
+
 
         public async Task<IEnumerable<LocationItem>> GetLocationsItemsAsync()
         {
@@ -148,7 +173,15 @@ namespace VolunteerCenterMVCProject.Services
                 throw new KeyNotFoundException("Event not found.");
             }
 
+            var statusHistoryEntries = this.context.statusHistories
+            .Where(sh => sh.EventId == id)
+            .ToList();
+            this.context.statusHistories.RemoveRange(statusHistoryEntries);
+
+            // Remove the event
             this.context.Events.Remove(eventToRemove);
+
+            // Save changes to the database
             await this.context.SaveChangesAsync();
         }
 
@@ -231,7 +264,7 @@ namespace VolunteerCenterMVCProject.Services
                 LocationCity = eventToEdit.Location.City,
                 CategoryName = eventToEdit.Category.Name,
                 Status = eventToEdit.Status,
-                CreatedBy = eventToEdit.CreatedBy,
+                ChangedBy = eventToEdit.CreatedBy,
                 LocationId = eventToEdit.LocationId,
                 CategoryId = eventToEdit.CategoryId
             };
@@ -246,7 +279,6 @@ namespace VolunteerCenterMVCProject.Services
             var result = await this.context.Users.FirstOrDefaultAsync(x => x.Id == userId);
             return result.Id;
         }
-
     }
 }
 

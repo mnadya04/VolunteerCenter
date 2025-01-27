@@ -22,6 +22,7 @@ namespace VolunteerCenterMVCProject.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Index(IndexVM model)
 		{
+
 			model.Pager = new PagerVM();
 
 			model.Pager.Page = model.Pager.Page <= 0 ? 1 : model.Pager.Page;

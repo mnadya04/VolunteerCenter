@@ -30,6 +30,7 @@ namespace VolunteerCenterMVCProject.Services.Interfaces
         Task<List<SelectListItem>> PopulateCategoryOptionsAsync(string selectedCategoryId = null);
 
         List<SelectListItem> PopulateStatusOptions();
+
     }
 }
 

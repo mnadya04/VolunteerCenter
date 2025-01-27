@@ -35,6 +35,8 @@ namespace VolunteerCenterMVCProject.Services
 			await context.SaveChangesAsync();
 		}
 
+
+
 		public async Task<IndexVM> GetAllChangesAsync
 			(int page, int itemsPerPage, int count)
 		{

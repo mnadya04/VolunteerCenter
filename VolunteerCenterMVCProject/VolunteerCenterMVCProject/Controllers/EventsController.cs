@@ -140,11 +140,14 @@ namespace VolunteerCenterMVCProject.Controllers
 
 
             var loggedUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            model.CreatedBy = loggedUserId;
+            model.ChangedBy = loggedUserId;
             await eventsService.EditEventByAdminAsync(model);
             TempData["Success"] = "Event updated successfully!";
             return RedirectToAction(nameof(Index));
         }
+
+        
+
 
         [Authorize(Roles = Constants.AdminRole)]
         [HttpGet]
