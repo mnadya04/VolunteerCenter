@@ -21,20 +21,17 @@
 				<div class="col-3">@item.Event</div>
 				<div class="col-3">@item.NewStatus</div>
 				<div class="col-3">@item.ChangeDate</div>
-				<div class="col-3">
-				</div>
 			</div>
 		}
 
-		<!-- Pager -->
-		<div class="row mt-4">
-			<div class="col text-center">
+	<!-- Pager -->
+	<div class="row mt-4">
+		<div class="col text-center">
 				@{
 					Html.RenderPartial("/Views/Shared/PagerPartial.cshtml", Model.Pager);
 				}
-			</div>
 		</div>
 	</div>
+</div>
 
-</div>
-</div>
+

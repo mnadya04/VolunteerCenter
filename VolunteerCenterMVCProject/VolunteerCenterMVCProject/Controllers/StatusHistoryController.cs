@@ -23,13 +23,18 @@ namespace VolunteerCenterMVCProject.Controllers
 		public async Task<IActionResult> Index(IndexVM model)
 		{
 
-			model.Pager = new PagerVM();
+			model.Pager ??= new PagerVM();
 
-			model.Pager.Page = model.Pager.Page <= 0 ? 1 : model.Pager.Page;
+			model.Pager.Page = model.Pager.Page <= 0
+										? 1
+										: model.Pager.Page;
 
-			model.Pager.ItemsPerPage = model.Pager.ItemsPerPage <= 0 ? 10 : model.Pager.ItemsPerPage;
+			model.Pager.ItemsPerPage = model.Pager.ItemsPerPage <= 0
+										? 10
+										: model.Pager.ItemsPerPage;
 
-			model.Pager.PagesCount = (int)Math.Ceiling(service.Count() / (double)model.Pager.ItemsPerPage);
+			model.Pager.PagesCount =
+			  (int)Math.Ceiling(service.Count() / (double)model.Pager.ItemsPerPage);
 
 			IndexVM result = await service.GetAllChangesAsync(model.Pager.Page, model.Pager.ItemsPerPage, model.Pager.PagesCount);
 

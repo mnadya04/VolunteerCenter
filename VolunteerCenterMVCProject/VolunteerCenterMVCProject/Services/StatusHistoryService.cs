@@ -56,9 +56,10 @@ namespace VolunteerCenterMVCProject.Services
 				});
 
 			model.Changes = await query
+					.OrderBy(x => x.Event)
+					.ThenByDescending(x => x.ChangeDate)
 					.Skip((page - 1) * itemsPerPage)
 					.Take(itemsPerPage)
-					.OrderBy(x => x.ChangeDate)
 					.ToListAsync();
 
 			return model;
