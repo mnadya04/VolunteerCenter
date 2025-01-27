@@ -28,14 +28,15 @@ namespace VolunteerCenterMVCProject.Controllers
         }
 
         // GET: Events/Details/{id}
+        [HttpGet]
         public async Task<IActionResult> Details(string id)
         {
             if (string.IsNullOrEmpty(id)) return RedirectToAction(nameof(Index));
 
             try
             {
-                var details = await eventsService.GetEventDetails(id);
-                return View(details);
+                DetailsEventViewModel model = await this.eventsService.GetEventDetails(id);
+                return View(model);
             }
             catch (KeyNotFoundException ex)
             {
