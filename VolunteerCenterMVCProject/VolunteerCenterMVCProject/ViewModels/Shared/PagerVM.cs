@@ -1,4 +1,5 @@
-﻿namespace VolunteerCenterMVCProject.ViewModels.Shared
+﻿
+namespace VolunteerCenterMVCProject.ViewModels.Shared
 {
 	public class PagerVM
 	{

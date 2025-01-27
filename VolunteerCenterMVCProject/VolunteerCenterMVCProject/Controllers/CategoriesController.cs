@@ -1,24 +1,26 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq.Expressions;
 using VolunteerCenterMVCProject.Common;
 using VolunteerCenterMVCProject.Services;
 using VolunteerCenterMVCProject.Services.Interfaces;
 using VolunteerCenterMVCProject.ViewModels.Categories;
+using VolunteerCenterMVCProject.ViewModels.Events;
 using VolunteerCenterMVCProject.ViewModels.Shared;
 
 namespace VolunteerCenterMVCProject.Controllers
 {
-	[Authorize(Roles = Constants.AdminRole)]
+	
 	public class CategoriesController : Controller
     {
         private readonly ICategoriesService service;
-      //  private readonly IEventsService eventsService;
+        private readonly IEventsService eventsService;
 
         public CategoriesController(ICategoriesService categoriesService)
         {
             this.service = categoriesService;
-           // this.eventsService = eventsService;
+            this.eventsService = eventsService;
         }
 
         [HttpGet]
@@ -66,6 +68,7 @@ namespace VolunteerCenterMVCProject.Controllers
             return RedirectToAction("Index");
         }
 
+
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
@@ -90,6 +93,35 @@ namespace VolunteerCenterMVCProject.Controllers
             await service.DeleteByIdAsync(id);
 
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ManageEvents(string id)
+        {
+            // Fetch the category and the associated events
+            var model = await this.service.GetCategoryWithEventsAsync(id);
+
+            // Ensure the model is being passed correctly to the view
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ManageEvents(IndexCategoryEventsViewModel model, string addEvent, string removeEvent)
+        {
+            if (!string.IsNullOrEmpty(addEvent))
+            {
+                // Add the event to the category
+                await this.service.AddEventToCategoryAsync(model.CategoryId, addEvent);
+            }
+
+            if (!string.IsNullOrEmpty(removeEvent))
+            {
+                // Remove the event from the category
+                await this.service.RemoveEventFromCategoryAsync(model.CategoryId, removeEvent);
+            }
+
+            // Redirect back to the same page with the updated category data
+            return RedirectToAction(nameof(ManageEvents), new { id = model.CategoryId });
         }
 
     }

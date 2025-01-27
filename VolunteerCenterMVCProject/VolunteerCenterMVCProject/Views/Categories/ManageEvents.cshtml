@@ -1,0 +1,41 @@
+﻿@model VolunteerCenterMVCProject.ViewModels.Categories.IndexCategoryEventsViewModel
+
+<h2>Manage Events for @Model.CategoryName</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <h4>Assigned Events</h4>
+        <ul class="list-group">
+            @foreach (var eventItem in Model.AssignedEvents)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    @eventItem.Name
+                    <form asp-action="ManageEvents" method="post">
+                        <input type="hidden" name="CategoryId" value="@Model.CategoryId" />
+                        <button type="submit" name="removeEvent" value="@eventItem.Id" class="btn btn-sm btn-danger">
+                            Remove
+                        </button>
+                    </form>
+                </li>
+            }
+        </ul>
+    </div>
+
+    <div class="col-md-6">
+        <h4>Available Events</h4>
+        <ul class="list-group">
+            @foreach (var eventItem in Model.AvailableEvents)
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    @eventItem.Name
+                    <form asp-action="ManageEvents" method="post">
+                        <input type="hidden" name="CategoryId" value="@Model.CategoryId" />
+                        <button type="submit" name="addEvent" value="@eventItem.Id" class="btn btn-sm btn-primary">
+                            Add
+                        </button>
+                    </form>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

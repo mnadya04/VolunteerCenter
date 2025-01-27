@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using VolunteerCenterMVCProject.Models;
 using VolunteerCenterMVCProject.ViewModels.Categories;
 
 namespace VolunteerCenterMVCProject.Services.Interfaces
@@ -12,5 +13,8 @@ namespace VolunteerCenterMVCProject.Services.Interfaces
         Task<CategoryVM> GetCategoryAsync(string id);
         Task UpdateAsync(EditVM model);
         Task<IndexVM> GetAllAsync(Expression<Func<CategoryVM, bool>> filter, int page, int itemsPerPage, int count);
+        Task<IndexCategoryEventsViewModel> GetCategoryWithEventsAsync(string categoryId);
+        Task AddEventToCategoryAsync(string categoryId, string eventId);
+        Task RemoveEventFromCategoryAsync(string categoryId, string eventId);
     }
 }

@@ -1,32 +1,38 @@
-﻿@model VolunteerCenterMVCProject.ViewModels.Locations.IndexVM
+﻿@using VolunteerCenterMVCProject.Common
+@model VolunteerCenterMVCProject.ViewModels.Locations.IndexVM
 
 
 <div class="grid">
 
-	<div class="row">
-	</div>
-	<div class="container mt-4">
-		<a href="/Locations/Create">New</a>
-		<div class="row text-center border-bottom pb-2 mb-2">
-			<div class="col-3 font-weight-bold">@Html.DisplayNameFor(m => m.Address)</div>
-			<div class="col-3 font-weight-bold">@Html.DisplayNameFor(m => m.City)</div>
-			<div class="col-3 font-weight-bold">@Html.DisplayNameFor(m => m.Country)</div>
-			<div class="col-3 font-weight-bold">Actions</div>
-		</div>
+    <div class="row">
+    </div>
+    <div class="container mt-4">
+        @if (User.IsInRole(Constants.AdminRole))
+        {
+            <p id="my-p">
+                <a asp-action="Create" class="btn" style="background-color:turquoise">Create New</a>
+            </p>
+        }
+        <div class="row text-center border-bottom pb-2 mb-2">
+            <div class="col-3 font-weight-bold">@Html.DisplayNameFor(m => m.Address)</div>
+            <div class="col-3 font-weight-bold">@Html.DisplayNameFor(m => m.City)</div>
+            <div class="col-3 font-weight-bold">@Html.DisplayNameFor(m => m.Country)</div>
+            <div class="col-3 font-weight-bold">Actions</div>
+        </div>
 
-		@foreach (var item in Model.Locations)
-		{
-			<div class="row text-center align-items-center py-2 border-bottom">
-				<div class="col-3">@item.Address</div>
-				<div class="col-3">@item.City</div>
-				<div class="col-3">@item.Country</div>
-				<div class="col-3">
-					<a href="/Locations/Edit?id=@item.Id" class="btn btn-sm btn-primary me-2">Edit</a>
-					<a  href="/Locations/Delete?id=@item.Id" class="btn btn-sm btn-danger">Delete</a>
-				</div>
-			</div>
-		}
-	</div>
+        @foreach (var item in Model.Locations)
+        {
+            <div class="row text-center align-items-center py-2 border-bottom">
+                <div class="col-3">@item.Address</div>
+                <div class="col-3">@item.City</div>
+                <div class="col-3">@item.Country</div>
+                <div class="col-3">
+                    <a href="/Locations/Edit?id=@item.Id" class="btn btn-sm btn-primary me-2">Edit</a>
+                    <a href="/Locations/Delete?id=@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                </div>
+            </div>
+        }
+    </div>
 
 </div>
 </div>

@@ -1,4 +1,5 @@
-﻿@model VolunteerCenterMVCProject.ViewModels.Categories.IndexVM
+﻿@using VolunteerCenterMVCProject.Common
+@model VolunteerCenterMVCProject.ViewModels.Categories.IndexVM
 
 
 <div class="grid">
@@ -38,14 +39,17 @@
 
 		@foreach (var item in Model.Categories)
 		{
-			<div class="row text-center align-items-center py-2 border-bottom">
-				<div class="col-3">@item.Name</div>
-				<div class="col-3">@item.Description</div>
-				<div class="col-3">
-					<a href="/Categories/Edit?id=@item.Id" class="btn btn-sm btn-primary me-2">Edit</a>
-					<a onclick="return confirm('Delete item?')" href="/Categories/Delete?id=@item.Id" class="btn btn-sm btn-danger">Delete</a>
-				</div>
-			</div>
+            <div class="row text-center align-items-center py-2 border-bottom">
+                <div class="col-3">@item.Name</div>
+                <div class="col-3">@item.Description</div>
+
+						<div class="col-3">
+                        <a href="/Categories/Edit?id=@item.Id" class="btn btn-sm btn-primary me-2">Edit</a>
+                        <a onclick="return confirm('Delete item?')" href="/Categories/Delete?id=@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                        <a href="/Categories/ManageEvents?id=@item.Id" class="btn btn-sm btn-secondary">Manage Events</a>
+						</div>
+			
+                </div>
 		}
 
 		<!-- Pager -->
