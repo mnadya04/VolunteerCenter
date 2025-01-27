@@ -42,14 +42,12 @@ namespace VolunteerCenterMVCProject.Data
 			modelBuilder.Entity<VolunteerSignups>()
 				.HasOne(x => x.User)
 				.WithMany(u => u.VolunteerSignups)
-				.HasForeignKey(x => x.VolunteerId)
-				.OnDelete(DeleteBehavior.Restrict);
+				.HasForeignKey(x => x.VolunteerId);
 
 			modelBuilder.Entity<VolunteerSignups>()
 				.HasOne(x => x.Event)
 				.WithMany(e => e.VolunteerSignups)
-				.HasForeignKey(x => x.EventId)
-				.OnDelete(DeleteBehavior.Restrict);
+				.HasForeignKey(x => x.EventId);
 
 			#endregion
 
@@ -60,15 +58,12 @@ namespace VolunteerCenterMVCProject.Data
 			modelBuilder.Entity<StatusHistory>()
 				.HasOne(x => x.Event)
 				.WithMany(x => x.StatusHistories)
-				.HasForeignKey(x => x.EventId)
-				.OnDelete(DeleteBehavior.Restrict);
+				.HasForeignKey(x => x.EventId);
 
 			modelBuilder.Entity<StatusHistory>()
 				.HasOne(x => x.User)
 				.WithMany(x => x.StatusHistories)
-				.HasForeignKey(x => x.ChangedBy)
-				.OnDelete(DeleteBehavior.Restrict);
-
+				.HasForeignKey(x => x.ChangedBy);
 
 			#endregion
 
@@ -79,24 +74,18 @@ namespace VolunteerCenterMVCProject.Data
 			modelBuilder.Entity<Event>()
 				.HasOne(x => x.Category)
 				.WithMany(x => x.Events)
-				.HasForeignKey(x => x.CategoryId)
-				.OnDelete(DeleteBehavior.Restrict);
-
+				.HasForeignKey(x => x.CategoryId);
 
 			modelBuilder.Entity<Event>()
 				.HasOne(x => x.Location)
 				.WithMany(x => x.Events)
-				.HasForeignKey(x => x.LocationId)
-				.OnDelete(DeleteBehavior.Restrict);
-
+				.HasForeignKey(x => x.LocationId);
 
 
 			modelBuilder.Entity<Event>()
 				.HasOne(x => x.User)
 				.WithMany(u => u.Events)
-				.HasForeignKey(x => x.CreatedBy)
-				.OnDelete(DeleteBehavior.Restrict);
-
+				.HasForeignKey(x => x.CreatedBy);
 			#endregion
 
 		}

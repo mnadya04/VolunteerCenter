@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-VolunteerCenterMVCProject-718b5a83-ff1a-44b7-b3e7-811e5d9f05c4</UserSecretsId>
   </PropertyGroup>
