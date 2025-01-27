@@ -71,6 +71,7 @@ namespace VolunteerCenterMVCProject.Services
             eventToEdit.Description = model.Description;
             eventToEdit.Deadline = model.Deadline;
             eventToEdit.Budget = model.Budget;
+            eventToEdit.Status = model.Status;
             eventToEdit.LocationId = location.LocationId;
             eventToEdit.CategoryId = category.CategoryId;
 
@@ -101,23 +102,25 @@ namespace VolunteerCenterMVCProject.Services
 
         // New methods for populating dropdown options:
 
-        public async Task<List<SelectListItem>> PopulateLocationOptionsAsync()
+        public async Task<List<SelectListItem>> PopulateLocationOptionsAsync(string selectedLocationId = null)
         {
             var locations = await GetLocationsItemsAsync();
             return locations.Select(loc => new SelectListItem
             {
                 Value = loc.LocationId,
-                Text = loc.City
+                Text = loc.City,
+                Selected = loc.LocationId == selectedLocationId
             }).ToList();
         }
 
-        public async Task<List<SelectListItem>> PopulateCategoryOptionsAsync()
+        public async Task<List<SelectListItem>> PopulateCategoryOptionsAsync(string selectedCategoryId = null)
         {
             var categories = await GetCategoriesItemsAsync();
             return categories.Select(cat => new SelectListItem
             {
                 Value = cat.CategoryId,
-                Text = cat.Name
+                Text = cat.Name,
+                Selected = cat.CategoryId == selectedCategoryId
             }).ToList();
         }
 
@@ -233,9 +236,12 @@ namespace VolunteerCenterMVCProject.Services
                 Description = eventToEdit.Description,
                 Deadline = eventToEdit.Deadline,
                 Budget = eventToEdit.Budget,
+                LocationCity = eventToEdit.Location.City,
+                CategoryName = eventToEdit.Category.Name,
+                Status = eventToEdit.Status,
+                CreatedBy = eventToEdit.CreatedBy,
                 LocationId = eventToEdit.LocationId,
-                CategoryId = eventToEdit.CategoryId,
-                CreatedBy = eventToEdit.CreatedBy
+                CategoryId = eventToEdit.CategoryId
             };
 
             return model;

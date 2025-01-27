@@ -25,9 +25,9 @@ namespace VolunteerCenterMVCProject.Services.Interfaces
 
         Task<IEnumerable<CategoryItem>> GetCategoriesItemsAsync();
 
-        Task<List<SelectListItem>> PopulateLocationOptionsAsync();
+        Task<List<SelectListItem>> PopulateLocationOptionsAsync(string selectedLocationId = null);
 
-        Task<List<SelectListItem>> PopulateCategoryOptionsAsync();
+        Task<List<SelectListItem>> PopulateCategoryOptionsAsync(string selectedCategoryId = null);
 
         List<SelectListItem> PopulateStatusOptions();
     }

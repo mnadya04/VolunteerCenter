@@ -43,16 +43,17 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="Status"></label>
-                <select asp-for="Status" class="form-control" asp-items="Model.LocationOptions"></select>
-                <span asp-validation-for="Status" class="text-danger"></span>
+                <label asp-for="LocationId"></label>
+                <select asp-for="LocationId" class="form-control" asp-items="Model.LocationOptions"></select>
+                <span asp-validation-for="LocationId" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label asp-for="CategoryId"></label>
+                <label asp-for="CategoryName"></label>
                 <select asp-for="CategoryId" class="form-control" asp-items="Model.CategoryOptions"></select>
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
+
 
             <input type="submit" value="Save" class="btn btn-primary" />
         </form>

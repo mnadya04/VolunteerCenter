@@ -53,7 +53,7 @@ namespace VolunteerCenterMVCProject.Controllers
                 LocationOptions = await eventsService.PopulateLocationOptionsAsync(),
                 CategoryOptions = await eventsService.PopulateCategoryOptionsAsync(),
                 StatusOptions = eventsService.PopulateStatusOptions(),
-                Deadline=DateTime.Now.AddDays(1)
+                Deadline = DateTime.Now.AddDays(1)
             };
 
             return View(model);
@@ -68,20 +68,20 @@ namespace VolunteerCenterMVCProject.Controllers
             if (!ModelState.IsValid)
             {
                 // Repopulate dropdown options
-                model.LocationOptions = await eventsService.PopulateLocationOptionsAsync();
-                model.CategoryOptions = await eventsService.PopulateCategoryOptionsAsync();
+                model.LocationOptions = await eventsService.PopulateLocationOptionsAsync(model.LocationId);
+                model.CategoryOptions = await eventsService.PopulateCategoryOptionsAsync(model.CategoryId);
                 model.StatusOptions = eventsService.PopulateStatusOptions();
-            
+
                 // Return the view with the updated model
-            //    return View(model);
+                //    return View(model);
             }
 
             try
             {
-				// Create the event using the service
-				var loggedUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                // Create the event using the service
+                var loggedUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 model.CreatedBy = loggedUserId;
-				await eventsService.CreateEventAsync(model);
+                await eventsService.CreateEventAsync(model);
                 TempData["Success"] = "Event created successfully!";
                 return RedirectToAction(nameof(Index));
             }
@@ -90,8 +90,8 @@ namespace VolunteerCenterMVCProject.Controllers
                 TempData["Error"] = $"An error occurred: {ex.Message}";
 
                 // Repopulate dropdown options on exception
-                model.LocationOptions = await eventsService.PopulateLocationOptionsAsync();
-                model.CategoryOptions = await eventsService.PopulateCategoryOptionsAsync();
+                model.LocationOptions = await eventsService.PopulateLocationOptionsAsync(model.LocationId);
+                model.CategoryOptions = await eventsService.PopulateCategoryOptionsAsync(model.CategoryId);
                 model.StatusOptions = eventsService.PopulateStatusOptions();
 
                 return View(model);
@@ -111,9 +111,9 @@ namespace VolunteerCenterMVCProject.Controllers
                 var model = await eventsService.GetEventToEditAsync(id);
 
                 // Populate dropdown options using the service
-                model.LocationOptions = await eventsService.PopulateLocationOptionsAsync();
-                model.CategoryOptions = await eventsService.PopulateCategoryOptionsAsync();
-                model.StatusOptions = eventsService.PopulateStatusOptions(); 
+                model.LocationOptions = await eventsService.PopulateLocationOptionsAsync(model.LocationId);
+                model.CategoryOptions = await eventsService.PopulateCategoryOptionsAsync(model.CategoryId);
+                model.StatusOptions = eventsService.PopulateStatusOptions();
 
                 return View(model);
             }
@@ -128,40 +128,30 @@ namespace VolunteerCenterMVCProject.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(EditEventViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                // Repopulate dropdown options if validation fails
-                model.LocationOptions = await eventsService.PopulateLocationOptionsAsync();
-                model.CategoryOptions = await eventsService.PopulateCategoryOptionsAsync();
-                model.StatusOptions = eventsService.PopulateStatusOptions();
-                //return View(model);
-            }
 
-            try
+            model.LocationOptions = await eventsService.PopulateLocationOptionsAsync(model.LocationId);
+            model.CategoryOptions = await eventsService.PopulateCategoryOptionsAsync(model.CategoryId);
+            model.StatusOptions = eventsService.PopulateStatusOptions();
+
+            /*if (!ModelState.IsValid)
             {
-				var loggedUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-				model.CreatedBy = loggedUserId;
-				await eventsService.EditEventByAdminAsync(model);
-                TempData["Success"] = "Event updated successfully!";
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception ex)
-            {
-                TempData["Error"] = ex.Message;
-                // Repopulate dropdown options on exception
-                model.LocationOptions = await eventsService.PopulateLocationOptionsAsync();
-                model.CategoryOptions = await eventsService.PopulateCategoryOptionsAsync();
-                model.StatusOptions = eventsService.PopulateStatusOptions(); 
                 return View(model);
-            }
+            }*/
+
+
+            var loggedUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            model.CreatedBy = loggedUserId;
+            await eventsService.EditEventByAdminAsync(model);
+            TempData["Success"] = "Event updated successfully!";
+            return RedirectToAction(nameof(Index));
         }
 
-		[Authorize(Roles = Constants.AdminRole)]
-		[HttpGet]
-		public async Task<IActionResult> Delete(string id)
-		{
-			await this.eventsService.DeleteEventAsync(id);
-			return this.RedirectToAction(nameof(this.Index));
-		}
-	}
+        [Authorize(Roles = Constants.AdminRole)]
+        [HttpGet]
+        public async Task<IActionResult> Delete(string id)
+        {
+            await this.eventsService.DeleteEventAsync(id);
+            return this.RedirectToAction(nameof(this.Index));
+        }
+    }
 }

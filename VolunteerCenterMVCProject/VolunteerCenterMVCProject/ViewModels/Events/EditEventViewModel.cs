@@ -11,11 +11,9 @@ namespace VolunteerCenterMVCProject.ViewModels.Events
         public string Description { get; set; }
         public DateTime Deadline { get; set; }
         public string LocationId { get; set; }
-        //public virtual Location Location { get; set; }
         public double Budget { get; set; }
 
         public string CategoryId { get; set; }
-
 
         public string CreatedBy { get; set; }
 
@@ -23,13 +21,13 @@ namespace VolunteerCenterMVCProject.ViewModels.Events
 
         public string CategoryName { get; set; }
 
+        // Event Status: Waiting, Assigned, InProgress, Completed, or Canceled
+        public string Status { get; set; }
 
         public List<SelectListItem> LocationOptions { get; set; }
         public List<SelectListItem> CategoryOptions { get; set; }
         public List<SelectListItem> StatusOptions { get; set; }
 
-        // Event Status: Waiting, Assigned, InProgress, Completed, or Canceled
-        public string Status { get; set; }
 
         public ICollection<VolunteerSignups> VolunteerSignups { get; set; }
     }
