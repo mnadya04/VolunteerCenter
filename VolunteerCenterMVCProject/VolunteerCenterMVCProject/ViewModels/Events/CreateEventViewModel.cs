@@ -5,6 +5,8 @@ namespace VolunteerCenterMVCProject.ViewModels.Events
 {
     public class CreateEventViewModel
     {
+
+        public string CreatedBy {  get; set; }
         [Required]
         [StringLength(100, ErrorMessage = "The Name field must be less than 100 characters.")]
         public string Name { get; set; }

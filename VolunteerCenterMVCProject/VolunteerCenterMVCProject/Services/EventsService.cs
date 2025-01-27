@@ -39,6 +39,7 @@ namespace VolunteerCenterMVCProject.Services
             // Create the event
             Event newEvent = new Event
             {
+                CreatedBy = model.CreatedBy,
                 Name = model.Name,
                 Description = model.Description,
                 Deadline = model.Deadline,
@@ -59,11 +60,12 @@ namespace VolunteerCenterMVCProject.Services
             Event? eventToEdit = await this.context.Events.FirstOrDefaultAsync(e => e.EventId == model.Id);
             if (eventToEdit == null) throw new KeyNotFoundException("Event not found.");
 
-            Location? location = await this.context.Locations.FirstOrDefaultAsync(l => l.City == model.LocationCity);
-            Category? category = await this.context.Categories.FirstOrDefaultAsync(c => c.Name == model.CategoryName);
-
+            Location? location = await this.context.Locations.FirstOrDefaultAsync(l => l.LocationId == model.LocationId);
+            Category? category = await this.context.Categories.FirstOrDefaultAsync(c => c.CategoryId == model.CategoryId);
+            
             if (location == null) throw new Exception("Invalid Location.");
             if (category == null) throw new Exception("Invalid Category.");
+
 
             eventToEdit.Name = model.Name;
             eventToEdit.Description = model.Description;

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace VolunteerCenterMVCProject.Controllers
 {
@@ -64,21 +65,23 @@ namespace VolunteerCenterMVCProject.Controllers
         [Authorize(Roles = Constants.AdminRole)]
         public async Task<IActionResult> Create(CreateEventViewModel model)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    // Repopulate dropdown options
-            //    model.LocationOptions = await eventsService.PopulateLocationOptionsAsync();
-            //    model.CategoryOptions = await eventsService.PopulateCategoryOptionsAsync();
-            //    model.StatusOptions = eventsService.PopulateStatusOptions();
-            //
-            //    // Return the view with the updated model
+            if (!ModelState.IsValid)
+            {
+                // Repopulate dropdown options
+                model.LocationOptions = await eventsService.PopulateLocationOptionsAsync();
+                model.CategoryOptions = await eventsService.PopulateCategoryOptionsAsync();
+                model.StatusOptions = eventsService.PopulateStatusOptions();
+            
+                // Return the view with the updated model
             //    return View(model);
-            //}
+            }
 
             try
             {
-                // Create the event using the service
-                await eventsService.CreateEventAsync(model);
+				// Create the event using the service
+				var loggedUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                model.CreatedBy = loggedUserId;
+				await eventsService.CreateEventAsync(model);
                 TempData["Success"] = "Event created successfully!";
                 return RedirectToAction(nameof(Index));
             }
@@ -130,13 +133,15 @@ namespace VolunteerCenterMVCProject.Controllers
                 // Repopulate dropdown options if validation fails
                 model.LocationOptions = await eventsService.PopulateLocationOptionsAsync();
                 model.CategoryOptions = await eventsService.PopulateCategoryOptionsAsync();
-                model.StatusOptions = eventsService.PopulateStatusOptions(); 
-                return View(model);
+                model.StatusOptions = eventsService.PopulateStatusOptions();
+                //return View(model);
             }
 
             try
             {
-                await eventsService.EditEventByAdminAsync(model);
+				var loggedUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+				model.CreatedBy = loggedUserId;
+				await eventsService.EditEventByAdminAsync(model);
                 TempData["Success"] = "Event updated successfully!";
                 return RedirectToAction(nameof(Index));
             }
@@ -151,28 +156,12 @@ namespace VolunteerCenterMVCProject.Controllers
             }
         }
 
-        // Delete action (if applicable, needs to confirm action before proceeding)
-        [Authorize(Roles = Constants.AdminRole)]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(string id)
-        {
-            if (string.IsNullOrEmpty(id)) return RedirectToAction(nameof(Index));
-
-            try
-            {
-                // Confirm deletion here if needed, for example
-                await eventsService.DeleteEventAsync(id);
-                TempData["Success"] = "Event deleted successfully!";
-                return RedirectToAction(nameof(Index));
-            }
-            catch (Exception ex)
-            {
-                TempData["Error"] = ex.Message;
-                return RedirectToAction(nameof(Index));
-            }
-        }
-
-        
-    }
+		[Authorize(Roles = Constants.AdminRole)]
+		[HttpGet]
+		public async Task<IActionResult> Delete(string id)
+		{
+			await this.eventsService.DeleteEventAsync(id);
+			return this.RedirectToAction(nameof(this.Index));
+		}
+	}
 }

@@ -32,7 +32,7 @@
 
             <div class="form-group">
                 <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" class="form-control" asp-items="ViewBag.StatusOptions"></select>
+                <select asp-for="Status" class="form-control" asp-items="Model.StatusOptions"></select>
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
 
@@ -44,7 +44,7 @@
 
             <div class="form-group">
                 <label asp-for="Status"></label>
-                <select asp-for="Status" class="form-control" asp-items="Model.StatusOptions"></select>
+                <select asp-for="Status" class="form-control" asp-items="Model.LocationOptions"></select>
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
 

@@ -11,7 +11,7 @@ namespace VolunteerCenterMVCProject.ViewModels.Events
         public string Description { get; set; }
         public DateTime Deadline { get; set; }
         public string LocationId { get; set; }
-        public virtual Location Location { get; set; }
+        //public virtual Location Location { get; set; }
         public double Budget { get; set; }
 
         public string CategoryId { get; set; }
