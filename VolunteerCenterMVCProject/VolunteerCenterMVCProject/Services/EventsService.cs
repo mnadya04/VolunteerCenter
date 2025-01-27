@@ -154,28 +154,20 @@ namespace VolunteerCenterMVCProject.Services
 
         public async Task<DetailsEventViewModel> GetEventDetails(string id)
         {
-            Event eventDetails = await this.context.Events
-                .Include(e => e.User)
-                .Include(e => e.Location)
-                .Include(e => e.Category)
-                .FirstOrDefaultAsync(e => e.EventId == id);
-
-            if (eventDetails == null)
-            {
-                throw new KeyNotFoundException("Event not found.");
-            }
-
-            return new DetailsEventViewModel
-            {
-                Name = eventDetails.Name,
-                Description = eventDetails.Description,
-                Deadline = eventDetails.Deadline,
-                Budget = eventDetails.Budget,
-                Status = eventDetails.Status,
-                User = $"{eventDetails.User.FirstName} {eventDetails.User.LastName}",
-                Location = eventDetails.Location.City,
-                Category = eventDetails.Category.Name
-            };
+            return await this.context.Events
+                .Where(e => e.EventId == id)
+                .Select(e => new DetailsEventViewModel
+                {
+                    Name = e.Name,
+                    Description = e.Description,
+                    Deadline = e.Deadline.ToString("dddd, dd MMMM yyyy"),
+                    Budget = e.Budget,
+                    Status = e.Status,
+                    User = string.Concat(e.User.FirstName, " ", e.User.LastName),
+                    Location = e.Location.City,
+                    Category = e.Category.Name
+                })
+                .FirstOrDefaultAsync();
         }
 
 

@@ -7,7 +7,7 @@ namespace VolunteerCenterMVCProject.ViewModels.Events
 	{
         public string Name { get; set; }
         public string Description { get; set; }
-        public DateTime Deadline { get; set; }
+        public string Deadline { get; set; }
         public string Location { get; set; }
         public double Budget { get; set; }
         public string Category { get; set; }
