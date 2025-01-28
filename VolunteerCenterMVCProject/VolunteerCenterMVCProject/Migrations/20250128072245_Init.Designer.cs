@@ -12,7 +12,7 @@ using VolunteerCenterMVCProject.Data;
 namespace VolunteerCenterMVCProject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250128065245_Init")]
+    [Migration("20250128072245_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -221,6 +221,9 @@ namespace VolunteerCenterMVCProject.Migrations
                 {
                     b.Property<string>("LocationId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");

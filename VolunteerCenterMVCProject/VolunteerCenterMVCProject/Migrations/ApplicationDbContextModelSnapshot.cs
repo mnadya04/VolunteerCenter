@@ -220,6 +220,9 @@ namespace VolunteerCenterMVCProject.Migrations
                     b.Property<string>("LocationId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 

@@ -24,7 +24,8 @@ namespace VolunteerCenterMVCProject.Services
 		{
 			Location location = new Location()
 			{
-				City = model.City,
+                Address = model.Address,
+                City = model.City,
 				Country = model.Country,
 			};
 
@@ -35,7 +36,8 @@ namespace VolunteerCenterMVCProject.Services
 		{
 			Location location = await context.Locations.FindAsync(model.Id);
 
-			location.City = model.City;
+            location.Address = model.Address;
+            location.City = model.City;
 			location.Country = model.Country;
 
 			context.Locations.Update(location);
@@ -65,7 +67,8 @@ namespace VolunteerCenterMVCProject.Services
 			LocationVM item = new LocationVM()
 			{
 				Id = location.LocationId,
-				City = location.City,
+                Address = location.Address,
+                City = location.City,
 				Country = location.Country
 			};
 			return item;
@@ -79,7 +82,8 @@ namespace VolunteerCenterMVCProject.Services
 				.Select(x => new LocationVM
 				{
 					Id = x.LocationId,
-					City = x.City,
+                    Address = x.Address,
+                    City = x.City,
 					Country = x.Country
 				})
 				.ToListAsync();
