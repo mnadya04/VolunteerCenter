@@ -14,7 +14,6 @@
             </p>
         }
         <div class="row text-center border-bottom pb-2 mb-2">
-            <div class="col-3 font-weight-bold">@Html.DisplayNameFor(m => m.Address)</div>
             <div class="col-3 font-weight-bold">@Html.DisplayNameFor(m => m.City)</div>
             <div class="col-3 font-weight-bold">@Html.DisplayNameFor(m => m.Country)</div>
             <div class="col-3 font-weight-bold">Actions</div>
@@ -23,7 +22,6 @@
         @foreach (var item in Model.Locations)
         {
             <div class="row text-center align-items-center py-2 border-bottom">
-                <div class="col-3">@item.Address</div>
                 <div class="col-3">@item.City</div>
                 <div class="col-3">@item.Country</div>
                 <div class="col-3">

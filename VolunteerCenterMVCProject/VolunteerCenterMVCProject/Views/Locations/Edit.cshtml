@@ -4,17 +4,7 @@
 <form action="/Locations/Edit" method="post">
     <div class="grid">
         @Html.HiddenFor(m => m.Id)
-		<div class="row">
-			<div class="col-2">
-				<label class="form-label">@Html.DisplayNameFor(m => m.Address) </label>
-			</div>
-			<div class="col-6 mb-3">
-				@Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
-			</div>
-			<div>
-				@Html.ValidationMessageFor(m => m.Address, null, new { @class = "text-danger" })
-			</div>
-		</div>
+		
 		<div class="row">
 			<div class="col-2">
 				<label class="form-label">@Html.DisplayNameFor(m => m.City) </label>

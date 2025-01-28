@@ -68,7 +68,6 @@ namespace VolunteerCenterMVCProject.Migrations
                 columns: table => new
                 {
                     LocationId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     City = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },

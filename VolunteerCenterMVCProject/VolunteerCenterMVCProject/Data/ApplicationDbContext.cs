@@ -6,112 +6,97 @@ using VolunteerCenterMVCProject.ViewModels.Categories;
 
 namespace VolunteerCenterMVCProject.Data
 {
-	public class ApplicationDbContext : IdentityDbContext<User, IdentityRole, string>
-	{
-		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-			: base(options)
-		{
-		}
-		public DbSet<Location> Locations { get; set; }
-		public DbSet<Category> Categories { get; set; }
-		public DbSet<VolunteerSignups> Signups { get; set; }
-		public DbSet<StatusHistory> statusHistories { get; set; }
-		public DbSet<Event> Events { get; set; }
+    public class ApplicationDbContext : IdentityDbContext<User, IdentityRole, string>
+    {
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            : base(options)
+        {
+        }
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<VolunteerSignups> Signups { get; set; }
+        public DbSet<StatusHistory> statusHistories { get; set; }
+        public DbSet<Event> Events { get; set; }
 
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
-		{
-			base.OnModelCreating(modelBuilder);
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
 
 
-			#region Categories
-			modelBuilder.Entity<Category>()
-			.HasKey(x => x.CategoryId);
+            #region Categories
+            modelBuilder.Entity<Category>()
+            .HasKey(x => x.CategoryId);
+            #endregion
 
-			modelBuilder.Entity<Category>()
-				.HasData(new Category()
-				{
-					CategoryId = "1",
-					Name = "Category not set yet",
-					Description = "Need to be set"
-				});
-			#endregion
+            #region Locations
+            modelBuilder.Entity<Location>()
+                .HasKey(c => c.LocationId);
 
-			#region Locations
-			modelBuilder.Entity<Location>()
-				.HasKey(c => c.LocationId);
-			modelBuilder.Entity<Location>()
-				.HasData(new Location()
-				{
-					LocationId = "1",
-					City = "Location not set yet",
-					Address = "Location not set yet",
-					Country = "Location not set yet"
-				});
-			#endregion
+            #endregion
 
-			#region VolunteerSingups
+            #region VolunteerSingups
 
-			modelBuilder.Entity<VolunteerSignups>()
-				.HasKey(c => c.SignupId);
+            modelBuilder.Entity<VolunteerSignups>()
+                .HasKey(c => c.SignupId);
 
-			modelBuilder.Entity<VolunteerSignups>()
-				.HasOne(x => x.User)
-				.WithMany(u => u.VolunteerSignups)
-				.HasForeignKey(x => x.VolunteerId);
+            modelBuilder.Entity<VolunteerSignups>()
+                .HasOne(x => x.User)
+                .WithMany(u => u.VolunteerSignups)
+                .HasForeignKey(x => x.VolunteerId);
 
-			modelBuilder.Entity<VolunteerSignups>()
-				.HasOne(x => x.Event)
-				.WithMany(e => e.VolunteerSignups)
-				.HasForeignKey(x => x.EventId);
+            modelBuilder.Entity<VolunteerSignups>()
+                .HasOne(x => x.Event)
+                .WithMany(e => e.VolunteerSignups)
+                .HasForeignKey(x => x.EventId);
 
-			#endregion
+            #endregion
 
-			#region StatusHistory
-			modelBuilder.Entity<StatusHistory>()
-				.HasKey(c => c.StatusHistoryId);
+            #region StatusHistory
+            modelBuilder.Entity<StatusHistory>()
+                .HasKey(c => c.StatusHistoryId);
 
-			modelBuilder.Entity<StatusHistory>()
-				.HasOne(x => x.Event)
-				.WithMany(x => x.StatusHistories)
-				.HasForeignKey(x => x.EventId);
+            modelBuilder.Entity<StatusHistory>()
+                .HasOne(x => x.Event)
+                .WithMany(x => x.StatusHistories)
+                .HasForeignKey(x => x.EventId);
 
-			modelBuilder.Entity<StatusHistory>()
-				.HasOne(x => x.User)
-				.WithMany(x => x.StatusHistories)
-				.HasForeignKey(x => x.ChangedBy);
+            modelBuilder.Entity<StatusHistory>()
+                .HasOne(x => x.User)
+                .WithMany(x => x.StatusHistories)
+                .HasForeignKey(x => x.ChangedBy);
 
-			#endregion
+            #endregion
 
-			#region Events
-			modelBuilder.Entity<Event>()
-				.HasKey(c => c.EventId);
+            #region Events
+            modelBuilder.Entity<Event>()
+                .HasKey(c => c.EventId);
 
-			modelBuilder.Entity<Event>()
-				.HasOne(x => x.Category)
-				.WithMany(x => x.Events)
-				.HasForeignKey(x => x.CategoryId);
+            modelBuilder.Entity<Event>()
+                .HasOne(x => x.Category)
+                .WithMany(x => x.Events)
+                .HasForeignKey(x => x.CategoryId);
 
-			modelBuilder.Entity<Event>()
-				.HasOne(x => x.Location)
-				.WithMany(x => x.Events)
-				.HasForeignKey(x => x.LocationId);
+            modelBuilder.Entity<Event>()
+                .HasOne(x => x.Location)
+                .WithMany(x => x.Events)
+                .HasForeignKey(x => x.LocationId);
 
 
 
-			modelBuilder.Entity<Event>()
-				.HasOne(x => x.User)
-				.WithMany(u => u.Events)
-				.HasForeignKey(x => x.CreatedBy);
-			#endregion
+            modelBuilder.Entity<Event>()
+                .HasOne(x => x.User)
+                .WithMany(u => u.Events)
+                .HasForeignKey(x => x.CreatedBy);
+            #endregion
 
-		}
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		{
-			base.OnConfiguring(optionsBuilder);
-			optionsBuilder.UseLazyLoadingProxies();
-		}
+        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+            optionsBuilder.UseLazyLoadingProxies();
+        }
 
 
-	}
+    }
 }

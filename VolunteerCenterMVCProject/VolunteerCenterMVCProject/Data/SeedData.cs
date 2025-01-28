@@ -19,6 +19,10 @@ namespace HousekeeperApp.Data.Seeding
 
             // Seed admin user
             await SeedUserAsync(dbContext, userManager, roleManager, "Admin", "Admin", "admin@gmail.com", "adminPass_01", Constants.AdminRole);
+
+
+            await SeedCategoriesAsync(dbContext);
+            await SeedLocationsAsync(dbContext);
         }
 
         private static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
@@ -83,6 +87,36 @@ namespace HousekeeperApp.Data.Seeding
             }
         }
 
-         
+
+        private static async Task SeedCategoriesAsync(ApplicationDbContext dbContext)
+        {
+            if (!dbContext.Categories.Any())
+            {
+                dbContext.Categories.Add(new Category
+                {
+                    CategoryId = "1",
+                    Name = "Category not set yet",
+                    Description = "Need to be set"
+                });
+
+                await dbContext.SaveChangesAsync();
+            }
+        }
+
+        private static async Task SeedLocationsAsync(ApplicationDbContext dbContext)
+        {
+            if (!dbContext.Locations.Any())
+            {
+                dbContext.Locations.Add(new Location
+                {
+                    LocationId = "1",
+                    City = "Location not set yet",
+                    Country = "Location not set yet"
+                });
+
+                await dbContext.SaveChangesAsync();
+            }
+        }
+
     }
 }

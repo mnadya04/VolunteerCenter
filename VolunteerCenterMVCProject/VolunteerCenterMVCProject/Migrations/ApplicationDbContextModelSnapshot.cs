@@ -173,14 +173,6 @@ namespace VolunteerCenterMVCProject.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            CategoryId = "1",
-                            Description = "Need to be set",
-                            Name = "Category not set yet"
-                        });
                 });
 
             modelBuilder.Entity("VolunteerCenterMVCProject.Models.Event", b =>
@@ -228,9 +220,6 @@ namespace VolunteerCenterMVCProject.Migrations
                     b.Property<string>("LocationId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
@@ -240,15 +229,6 @@ namespace VolunteerCenterMVCProject.Migrations
                     b.HasKey("LocationId");
 
                     b.ToTable("Locations");
-
-                    b.HasData(
-                        new
-                        {
-                            LocationId = "1",
-                            Address = "Location not set yet",
-                            City = "Location not set yet",
-                            Country = "Location not set yet"
-                        });
                 });
 
             modelBuilder.Entity("VolunteerCenterMVCProject.Models.StatusHistory", b =>
