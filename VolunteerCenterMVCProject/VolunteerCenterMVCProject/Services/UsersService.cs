@@ -76,7 +76,15 @@ namespace VolunteerCenterMVCProject.Services
 		{
 			User item = await this.userManager.FindByIdAsync(id);
 
+			var signUpEntries = this.context.Signups
+			.Where(s => s.VolunteerId == id)
+			.ToList();
+
+			this.context.Signups.RemoveRange(signUpEntries);
+		
 			await userManager.DeleteAsync(item);
+			await this.context.SaveChangesAsync();
+
 		}
 		public async Task UpdateAsync(EditUserVM model)
 		{
