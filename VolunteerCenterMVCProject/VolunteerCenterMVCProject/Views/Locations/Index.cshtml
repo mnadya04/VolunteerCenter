@@ -4,6 +4,28 @@
 
 <div class="grid">
 
+	<div class="row align-items-center g-3 mb-3">
+		<form action="/Locations/Index" method="get" class="d-flex w-100">
+			@foreach (var key in this.ViewContext.HttpContext.Request.Query.Keys)
+			{
+				if (key != "City" && key != "Country" && key != "Pager.Page")
+				{
+					<input type="hidden" name="@key" value="@this.ViewContext.HttpContext.Request.Query[key]" />
+				}
+			}
+			<div class="col-md-3 me-3">
+				@Html.TextBoxFor(m => m.City, new { @class = "form-control", placeholder = "City" })
+			</div>
+			<div class="col-md-3 me-3">
+				@Html.TextBoxFor(m => m.Country, new { @class = "form-control", placeholder = "Country" })
+			</div>
+			<div class="col-md-3 d-flex justify-content-end">
+				<a href="/Locations/Index" class="btn btn-secondary me-2">Clear</a>
+				<input type="submit" value="Filter" class="btn btn-primary" />
+			</div>
+		</form>
+	</div>
+
 	<div class="row">
 	</div>
 	<div class="container mt-4">

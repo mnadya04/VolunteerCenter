@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using VolunteerCenterMVCProject.Data;
 using VolunteerCenterMVCProject.Models;
 using VolunteerCenterMVCProject.Services.Interfaces;
@@ -15,17 +16,14 @@ namespace VolunteerCenterMVCProject.Services
 			this.context = context;
 		}
 
-		public int Count()
-		{
-			return context.Locations.Count();
-		}
+
 
 		public async Task CreateAsync(CreateVM model)
 		{
 			Location location = new Location()
 			{
-                Address = model.Address,
-                City = model.City,
+				Address = model.Address,
+				City = model.City,
 				Country = model.Country,
 			};
 
@@ -36,8 +34,8 @@ namespace VolunteerCenterMVCProject.Services
 		{
 			Location location = await context.Locations.FindAsync(model.Id);
 
-            location.Address = model.Address;
-            location.City = model.City;
+			location.Address = model.Address;
+			location.City = model.City;
 			location.Country = model.Country;
 
 			context.Locations.Update(location);
@@ -67,26 +65,33 @@ namespace VolunteerCenterMVCProject.Services
 			LocationVM item = new LocationVM()
 			{
 				Id = location.LocationId,
-                Address = location.Address,
-                City = location.City,
+				Address = location.Address,
+				City = location.City,
 				Country = location.Country
 			};
 			return item;
 		}
 
-		public async Task<IndexVM> GetAllAsync()
+		public async Task<IndexVM> GetAllAsync(Expression<Func<LocationVM, bool>> filter = null)
 		{
+
 			IndexVM model = new IndexVM();
-			model.Locations = await context.Locations
+
+			IQueryable<LocationVM> query = context.Locations
 				.Where(x => x.LocationId != "1")
 				.Select(x => new LocationVM
 				{
 					Id = x.LocationId,
-                    Address = x.Address,
-                    City = x.City,
-					Country = x.Country
-				})
-				.ToListAsync();
+					Address = x.Address,
+					City = x.City,
+					Country = x.Country,
+				});
+
+			if (filter != null)
+				query = query.Where(filter);
+
+
+			model.Locations = await query.ToListAsync();
 
 			return model;
 		}

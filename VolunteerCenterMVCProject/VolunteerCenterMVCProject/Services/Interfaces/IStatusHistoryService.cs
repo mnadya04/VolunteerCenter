@@ -7,7 +7,7 @@ namespace VolunteerCenterMVCProject.Services.Interfaces
 	{
 		int Count();
 		Task Create(CreateVM model);
-		Task<IndexVM> GetAllChangesAsync(int page, int itemsPerPage, int count);
+		Task<IndexVM> GetAllChangesAsync( int page, int itemsPerPage, int count);
 
 	}
 }

@@ -31,15 +31,20 @@ namespace VolunteerCenterMVCProject.Controllers
 		{
 			var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-
-
 			Expression<Func<IndexEventViewModel, bool>> filter = i =>
 			   (String.IsNullOrEmpty(model.Name) || i.Name.Contains(model.Name)) &&
 			   (String.IsNullOrEmpty(model.Location) || i.Location.Contains(model.Location)) &&
 			   (String.IsNullOrEmpty(model.Category) || i.Category.Contains(model.Category));
 
 
-			model = await eventsService.GetEventsAsync(model,filter);
+			model = await eventsService.GetEventsAsync(model, filter);
+
+			foreach (var eventItem in model.Events)
+			{
+				eventItem.IsUserSignedUp = await signUpsService.IsUserSignedUpAsync(eventItem.Id, userId);
+			}
+
+
 
 			return View(model);
 		}

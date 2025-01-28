@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq.Expressions;
 using VolunteerCenterMVCProject.Common;
 using VolunteerCenterMVCProject.Services.Interfaces;
 using VolunteerCenterMVCProject.ViewModels.Locations;
@@ -21,9 +22,16 @@ namespace VolunteerCenterMVCProject.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Index(IndexVM model)
 		{
-			IndexVM result = await service.GetAllAsync();
+
+			Expression<Func<LocationVM, bool>> filter = i =>
+	   (String.IsNullOrEmpty(model.City) || i.City.Contains(model.City)) &&
+	   (String.IsNullOrEmpty(model.Country) || i.Country.Contains(model.Country));
+
+			IndexVM result = await service.GetAllAsync(filter);
 			model.Locations = result.Locations;
-			
+
+
+
 			return View(model);
 		}
 
@@ -36,7 +44,7 @@ namespace VolunteerCenterMVCProject.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Create(CreateVM model)
 		{
-			if(!ModelState.IsValid)
+			if (!ModelState.IsValid)
 				return View(model);
 
 			await service.CreateAsync(model);
@@ -56,7 +64,7 @@ namespace VolunteerCenterMVCProject.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Edit(EditVM model)
 		{
-			if(!ModelState.IsValid)
+			if (!ModelState.IsValid)
 				return View(model);
 
 			await service.UpdateAsync(model);

@@ -51,6 +51,7 @@ namespace VolunteerCenterMVCProject.Services
 			var isSignedUp = await _context.Signups
 				.AnyAsync(s => s.EventId == eventId && s.VolunteerId == userId);
 
+
 			return isSignedUp;
 		}
 	}
